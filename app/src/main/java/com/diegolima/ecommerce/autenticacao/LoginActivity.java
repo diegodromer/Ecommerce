@@ -2,7 +2,6 @@ package com.diegolima.ecommerce.autenticacao;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,11 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.diegolima.ecommerce.MainActivity;
-import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.databinding.ActivityLoginBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
-import com.diegolima.ecommerce.model.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -78,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 				startActivity(new Intent(this, RecuperaContaActivity.class)));
 
 		binding.include.ibVoltar.setOnClickListener(view ->
-				startActivity(new Intent(this, MainActivity.class)));
+				startActivity(new Intent(this, MainActivityUsuario.class)));
 
 		binding.btnCadastro.setOnClickListener(view -> {
 			Intent intent = new Intent(this, CadastroActivity.class);

@@ -26,10 +26,10 @@
             android:name=".SegundaActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.usuario.MainActivityUsuario"
             android:exported="false" />
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".app.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splash">
             <intent-filter>

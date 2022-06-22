@@ -1,14 +1,12 @@
-package com.diegolima.ecommerce.activity;
+package com.diegolima.ecommerce.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.cardemulation.HostNfcFService;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
-import com.diegolima.ecommerce.MainActivity;
+import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -20,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
 
 		new Handler(getMainLooper()).postDelayed(() -> {
 			finish();
-			startActivity(new Intent(this, MainActivity.class));
+			startActivity(new Intent(this, MainActivityUsuario.class));
 		}, 500);
 	}
 }
