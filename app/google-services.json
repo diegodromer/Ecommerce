@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "456058123416",
+    "project_id": "ecommerce-38db4",
+    "storage_bucket": "ecommerce-38db4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456058123416:android:29024e0ae24128caff8ced",
+        "android_client_info": {
+          "package_name": "com.diegolima.ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456058123416-ugkvmp92ed0u9tute72tl652s47tssjj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diegolima.ecommerce",
+            "certificate_hash": "bd5777155f0c67fd9fc853e64b1915938ef125c3"
+          }
+        },
+        {
+          "client_id": "456058123416-r37b77h0m8mma71hdnlg5la5ieab2gle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc0f13aLvBiRlKFz8CoVKHhYU34jjFz5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456058123416-r37b77h0m8mma71hdnlg5la5ieab2gle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
