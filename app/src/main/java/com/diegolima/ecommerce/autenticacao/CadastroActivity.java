@@ -11,6 +11,7 @@ import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.databinding.ActivityCadastroBinding;
 import com.diegolima.ecommerce.databinding.ActivityLoginBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
+import com.diegolima.ecommerce.model.Loja;
 import com.diegolima.ecommerce.model.Usuario;
 import com.google.firebase.database.DatabaseReference;
 
@@ -54,6 +55,27 @@ public class CadastroActivity extends AppCompatActivity {
 		});
 	}
 
+	/*private void criarLoja(Loja loja) {
+		FirebaseHelper.getAuth().createUserWithEmailAndPassword(
+				loja.getEmail(), loja.getSenha()
+		).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				String id = task.getResult().getUser().getUid();
+
+				loja.setId(id);
+				loja.salvar();
+			} else {
+				Toast.makeText(
+						this,
+						FirebaseHelper.validaErros(task.getException().getMessage()),
+						Toast.LENGTH_SHORT
+				).show();
+			}
+			binding.progressBar.setVisibility(View.GONE);
+		});
+	}*/
+
+
 	public void validaDados(View view) {
 		String nome = binding.edtNome.getText().toString().trim();
 		String email = binding.edtEmail.getText().toString().trim();
@@ -66,6 +88,13 @@ public class CadastroActivity extends AppCompatActivity {
 					if (!confirmaSenha.isEmpty()) {
 						if (senha.equals(confirmaSenha)) {
 							binding.progressBar.setVisibility(View.VISIBLE);
+
+/*							Loja loja = new Loja();
+							loja.setNome(nome);
+							loja.setEmail(email);
+							loja.setSenha(senha);
+							criarLoja(loja);*/
+
 							Usuario usuario = new Usuario();
 							usuario.setNome(nome);
 							usuario.setEmail(email);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_usuario"
+    app:startDestination="@id/menu_pedido">
+
+    <fragment
+        android:id="@+id/menu_pedido"
+        android:name="com.diegolima.ecommerce.fragment.loja.LojaPedidoFragment"
+        android:label="fragment_loja_pedido"
+        tools:layout="@layout/fragment_loja_pedido" />
+
+
+    <fragment
+        android:id="@+id/menu_produto"
+        android:name="com.diegolima.ecommerce.fragment.loja.LojaProdutoFragment"
+        android:label="fragment_loja_produto"
+        tools:layout="@layout/fragment_loja_produto" />
+
+    <fragment
+        android:id="@+id/menu_categoria"
+        android:name="com.diegolima.ecommerce.fragment.loja.LojaCategoriaFragment"
+        android:label="fragment_loja_categoria"
+        tools:layout="@layout/fragment_loja_categoria" />
+
+    <fragment
+        android:id="@+id/menu_config"
+        android:name="com.diegolima.ecommerce.fragment.loja.LojaConfigFragment"
+        android:label="fragment_loja_config"
+        tools:layout="@layout/fragment_loja_config" />
+</navigation>
