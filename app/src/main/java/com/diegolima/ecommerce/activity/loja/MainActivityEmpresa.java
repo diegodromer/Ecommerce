@@ -8,16 +8,15 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 
 import com.diegolima.ecommerce.R;
-import com.diegolima.ecommerce.databinding.ActivityMainEmpresaBinding;
 
 public class MainActivityEmpresa extends AppCompatActivity {
 
-	private ActivityMainEmpresaBinding binding;
+	private com.diegolima.ecommerce.databinding.ActivityMainEmpresaBinding binding;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		binding = ActivityMainEmpresaBinding.inflate(getLayoutInflater());
+		binding = com.diegolima.ecommerce.databinding.ActivityMainEmpresaBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
 		NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);

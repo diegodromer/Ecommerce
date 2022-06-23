@@ -8,7 +8,7 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="lojaCategoriaFragment">
+                  <entry key="menu_categoria">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -20,7 +20,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="lojaConfigFragment">
+                  <entry key="menu_config">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -32,7 +32,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="lojaPedidoFragment">
+                  <entry key="menu_pedido">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -44,7 +44,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="lojaProdutoFragment">
+                  <entry key="menu_produto">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
