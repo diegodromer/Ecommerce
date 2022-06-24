@@ -22,14 +22,18 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_recupera_conta.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_segunda.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_splash.xml" value="0.1111111111111111" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_delete.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_form_categoria.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_categoria.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_config.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_produto.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_usuario_home.xml" value="0.1" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_usuario_pedido.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_usuario_perfil.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/ib_voltar.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_categoria_horizontal.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_selected.xml" value="0.2015625" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/toolbar_voltar_add.xml" value="0.33" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/menu/menu.xml" value="0.1" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/menu/menu_loja.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/menu/menu_usuario.xml" value="0.2015625" />

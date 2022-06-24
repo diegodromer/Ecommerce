@@ -22,7 +22,7 @@
             android:id="@+id/imagemCategoria"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/placeholder_form_categorias" />
 
     </androidx.cardview.widget.CardView>
@@ -37,6 +37,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        android:lines="3"
+        android:ellipsize="end"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <CheckBox
