@@ -2,10 +2,15 @@ package com.diegolima.ecommerce.activity.loja;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -16,42 +21,187 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.adapter.CategoriaDialogAdapter;
 import com.diegolima.ecommerce.databinding.ActivityLojaFormProdutoBinding;
 import com.diegolima.ecommerce.databinding.BottomSheetFormProdutoBinding;
+import com.diegolima.ecommerce.databinding.DialogFormProdutoCategoriaBinding;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
+import com.diegolima.ecommerce.model.Categoria;
+import com.diegolima.ecommerce.model.ImagemUpload;
+import com.diegolima.ecommerce.model.Produto;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class LojaFormProdutoActivity extends AppCompatActivity {
+public class LojaFormProdutoActivity extends AppCompatActivity implements CategoriaDialogAdapter.OnClick {
+
+	private DialogFormProdutoCategoriaBinding categoriaBinding;
+
+	private List<ImagemUpload> imagemUploadList = new ArrayList<>();
+	private Produto produto;
+	private boolean novoProduto = true;
 
 	private String currentPhotoPath;
-
+	private List<String> idsCategoriasSelecionadas = new ArrayList<>();
 	private int resultCode = 0;
-
 	private ActivityLojaFormProdutoBinding binding;
+	private List<Categoria> categoriaList = new ArrayList<>();
+	private AlertDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		binding = ActivityLojaFormProdutoBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
-
+		iniciaComponentes();
 		configClicks();
+		recuperaCategorias();
+	}
+
+	private void configRv() {
+		categoriaBinding.rvCategorias.setLayoutManager(new LinearLayoutManager(this));
+		categoriaBinding.rvCategorias.setHasFixedSize(true);
+		CategoriaDialogAdapter categoriaDialogAdapter = new CategoriaDialogAdapter(idsCategoriasSelecionadas, categoriaList, this);
+		categoriaBinding.rvCategorias.setAdapter(categoriaDialogAdapter);
+	}
+
+	public void showDialogCategorias(View view){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog2);
+
+		categoriaBinding = DialogFormProdutoCategoriaBinding
+				.inflate(LayoutInflater.from(this));
+
+		categoriaBinding.btnFechar.setOnClickListener(v -> {
+			dialog.dismiss();
+		});
+
+		categoriaBinding.btnSalvar.setOnClickListener(v -> {
+			dialog.dismiss();
+		});
+
+		if (categoriaList.isEmpty()){
+			categoriaBinding.textInfo.setText("Nenhuma categoria cadastrada");
+		}else{
+			categoriaBinding.textInfo.setText("");
+		}
+
+		categoriaBinding.progressBar.setVisibility(View.GONE);
+
+		configRv();
+
+		builder.setView(categoriaBinding.getRoot());
+
+		dialog = builder.create();
+		dialog.show();
+	}
+
+	private void recuperaCategorias() {
+		DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
+				.child("categorias");
+		categoriaRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot snapshot) {
+				if (snapshot.exists()) {
+					categoriaList.clear();
+					for (DataSnapshot ds : snapshot.getChildren()) {
+						Categoria categoria = ds.getValue(Categoria.class);
+						categoriaList.add(categoria);
+					}
+				} else {
+
+				}
+				Collections.reverse(categoriaList);
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError error) {
+
+			}
+		});
+	}
+
+	private void iniciaComponentes() {
+		binding.edtValorAntigo.setLocale(new Locale("PT", "br"));
+		binding.edtValorAtual.setLocale(new Locale("PT", "br"));
 	}
 
 	private void configClicks() {
 		binding.imagemProduto0.setOnClickListener(v -> showBottomSheet(0));
 		binding.imagemProduto1.setOnClickListener(v -> showBottomSheet(1));
 		binding.imagemProduto2.setOnClickListener(v -> showBottomSheet(2));
+	}
+
+	private void ocultaTeclado() {
+		InputMethodManager inputMethodManager =
+				(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(binding.edtTitulo.getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+
+	public void validaDdos(View view) {
+		String titulo = binding.edtTitulo.getText().toString().trim();
+		String descricao = binding.edtDescricao.getText().toString().trim();
+		double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
+		double valorAtual = (double) binding.edtValorAtual.getRawValue() / 100;
+
+		if (!titulo.isEmpty()) {
+			if (!descricao.isEmpty()) {
+				if (valorAtual > 0) {
+					if (produto == null) produto = new Produto();
+
+					produto.setTitulo(titulo);
+					produto.setDescricao(descricao);
+					produto.setValorAtual(valorAtual);
+					if (valorAntigo > 0) {
+						produto.setValorAntigo(valorAntigo);
+					}
+
+					if (novoProduto) {
+						if (imagemUploadList.size() == 3) {
+							for (int i = 0; i < imagemUploadList.size(); i++) {
+								salvarImagemFirebase(imagemUploadList.get(i));
+							}
+						} else {
+							ocultaTeclado();
+							Toast.makeText(this, "Escolha três imagens para o produto.", Toast.LENGTH_SHORT).show();
+						}
+					} else {
+						if (imagemUploadList.size() > 0) {
+							for (int i = 0; i < imagemUploadList.size(); i++) {
+								salvarImagemFirebase(imagemUploadList.get(i));
+							}
+						} else {
+							produto.salvar(false);
+						}
+					}
+				} else {
+					binding.edtValorAtual.setError("Informe um valor válido.");
+				}
+			} else {
+				binding.edtDescricao.setError("Informação obrigatória.");
+			}
+		} else {
+			binding.edtTitulo.setError("Informação obrigatória.");
+		}
 	}
 
 	private void showBottomSheet(int code) {
@@ -169,6 +319,65 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 		resultLauncher.launch(intent);
 	}
 
+	private void configUpload(String caminhoImagem) {
+		int request = 0;
+		switch (resultCode) {
+			case 0:
+			case 3:
+				request = 0;
+				break;
+			case 1:
+			case 4:
+				request = 1;
+				break;
+			case 2:
+			case 5:
+				request = 2;
+				break;
+		}
+
+		ImagemUpload imagemUpload = new ImagemUpload(request, caminhoImagem);
+		if (!imagemUploadList.isEmpty()) {
+			boolean encontrou = false;
+			for (int i = 0; i < imagemUploadList.size(); i++) {
+				if (imagemUploadList.get(i).getIndex() == request) {
+					encontrou = true;
+				}
+			}
+			if (encontrou) {
+				imagemUploadList.set(request, imagemUpload);
+			} else {
+				imagemUploadList.add(imagemUpload);
+			}
+		} else {
+			imagemUploadList.add(imagemUpload);
+		}
+	}
+
+	private void salvarImagemFirebase(ImagemUpload imagemUpload) {
+
+		int index = imagemUpload.getIndex();
+		String caminhoImagem = imagemUpload.getCaminhoImagem();
+
+		StorageReference storageReference = FirebaseHelper.getStorageReference()
+				.child("imagens")
+				.child("produtos")
+				.child(produto.getId())
+				.child("imagem" + index + ".jpeg");
+
+		UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
+		uploadTask.addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnCompleteListener(task -> {
+
+			imagemUpload.setCaminhoImagem(task.getResult().toString());
+			produto.getUrlsImagens().add(imagemUpload);
+
+			if (imagemUploadList.size() == (index + 1)) {
+				produto.salvar(novoProduto);
+			}
+
+		})).addOnFailureListener(e -> Toast.makeText(this, "Ocorreu um erro com o upload, tente novamente", Toast.LENGTH_SHORT).show());
+	}
+
 	private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
 			new ActivityResultContracts.StartActivityForResult(),
 			result -> {
@@ -198,6 +407,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 									break;
 								}
 							}
+
+							configUpload(caminhoImagem);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -218,6 +429,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 								binding.imagemProduto2.setImageURI(Uri.fromFile(file));
 								break;
 						}
+						configUpload(caminhoImagem);
 					}
 				}
 			}
@@ -250,5 +462,10 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 				.setGotoSettingButtonText("Sim")
 				.setPermissions(permissoes)
 				.check();
+	}
+
+	@Override
+	public void onClickListener(Categoria categoria) {
+
 	}
 }

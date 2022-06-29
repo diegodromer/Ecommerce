@@ -54,13 +54,13 @@
                         <ImageView
                             android:id="@+id/imagemProduto0"
                             android:layout_width="match_parent"
-                            android:scaleType="centerCrop"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
 
                         <ImageView
+                            android:id="@+id/imageFake0"
                             android:layout_width="62dp"
                             android:layout_height="62dp"
-                            android:id="@+id/imageFake0"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
@@ -76,14 +76,14 @@
 
                         <ImageView
                             android:id="@+id/imagemProduto1"
-                            android:scaleType="centerCrop"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
 
                         <ImageView
+                            android:id="@+id/imageFake1"
                             android:layout_width="62dp"
                             android:layout_height="62dp"
-                            android:id="@+id/imageFake1"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
@@ -99,15 +99,15 @@
 
                         <ImageView
                             android:id="@+id/imagemProduto2"
-                            android:scaleType="centerCrop"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
 
                         <ImageView
+                            android:id="@+id/imageFake2"
                             android:layout_width="62dp"
                             android:layout_height="62dp"
                             android:layout_gravity="center"
-                            android:id="@+id/imageFake2"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
 
@@ -132,6 +132,7 @@
                     android:theme="@style/EditTextTheme">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"
@@ -145,6 +146,7 @@
                     android:theme="@style/EditTextTheme">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDescricao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"
@@ -157,42 +159,28 @@
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.blackcat.currencyedittext.CurrencyEditText
+                        android:id="@+id/edtValorAntigo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:theme="@style/EditTextTheme">
+                        android:backgroundTint="@android:color/transparent" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:hint="De R$" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.blackcat.currencyedittext.CurrencyEditText
+                        android:id="@+id/edtValorAtual"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:theme="@style/EditTextTheme">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:hint="Por R$" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:backgroundTint="@android:color/transparent" />
                 </LinearLayout>
 
                 <android.widget.Button
+                    android:onClick="showDialogCategorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_borda_laranja"
                     android:text="Nenhuma categoria selecionada" />
-
 
                 <android.widget.Button
                     android:id="@+id/btnLogin"
@@ -201,6 +189,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/bg_btn"
+                    android:onClick="validaDdos"
                     android:text="Salvar"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
