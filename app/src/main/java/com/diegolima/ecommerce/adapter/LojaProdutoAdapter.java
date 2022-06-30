@@ -41,6 +41,21 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 
 		holder.txtNomeProduto.setText(produto.getTitulo());
 
+		if (produto.getValorAntigo() > 0){
+
+			double resto = produto.getValorAntigo() - produto.getValorAtual();
+			int porcentagem = (int) (resto / produto.getValorAntigo() * 100);
+
+			if (porcentagem >= 10){
+				holder.txtDescontoProduto.setText(context.getString(R.string.valor_off, porcentagem, "%"));
+			}else{ //0,09
+				String porcent = String.valueOf(porcentagem).replace("0", ""); //9
+				holder.txtDescontoProduto.setText(context.getString(R.string.valor_off, Integer.parseInt(porcent), "%"));
+			}
+		}else{
+			holder.txtDescontoProduto.setVisibility(View.GONE);
+		}
+
 		for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
 			if (produto.getUrlsImagens().get(i).getIndex() == 0){
 				Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()).into(holder.imagemProduto);
@@ -48,7 +63,6 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 		}
 
 		holder.txtValorProduto.setText(String.valueOf(produto.getValorAtual()));
-		holder.txtDescontoProduto.setText("15% OFF");
 
 		holder.itemView.setOnClickListener(v -> onClickListener.OnClick(produto));
 	}
