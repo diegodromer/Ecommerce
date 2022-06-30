@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -28,7 +27,6 @@ import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.CategoriaDialogAdapter;
 import com.diegolima.ecommerce.databinding.ActivityLojaFormProdutoBinding;
 import com.diegolima.ecommerce.databinding.BottomSheetFormProdutoBinding;
-import com.diegolima.ecommerce.databinding.DialogFormProdutoCategoriaBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Categoria;
 import com.diegolima.ecommerce.model.ImagemUpload;
@@ -54,17 +52,21 @@ import java.util.Locale;
 
 public class LojaFormProdutoActivity extends AppCompatActivity implements CategoriaDialogAdapter.OnClick {
 
-	private DialogFormProdutoCategoriaBinding categoriaBinding;
+	private com.diegolima.ecommerce.databinding.DialogFormProdutoCategoriaBinding categoriaBinding;
+
+	private List<String> idsCategoriasSelecionadas = new ArrayList<>();
+	private List<String> categoriaSelecionadaList = new ArrayList<>();
+
+	private List<Categoria> categoriaList = new ArrayList<>();
 
 	private List<ImagemUpload> imagemUploadList = new ArrayList<>();
+
 	private Produto produto;
 	private boolean novoProduto = true;
 
 	private String currentPhotoPath;
-	private List<String> idsCategoriasSelecionadas = new ArrayList<>();
 	private int resultCode = 0;
 	private ActivityLojaFormProdutoBinding binding;
-	private List<Categoria> categoriaList = new ArrayList<>();
 	private AlertDialog dialog;
 
 	@Override
@@ -75,6 +77,11 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		iniciaComponentes();
 		configClicks();
 		recuperaCategorias();
+		getExtras();
+	}
+
+	private void getExtras(){
+
 	}
 
 	private void configRv() {
@@ -87,7 +94,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 	public void showDialogCategorias(View view){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog2);
 
-		categoriaBinding = DialogFormProdutoCategoriaBinding
+		categoriaBinding = com.diegolima.ecommerce.databinding.DialogFormProdutoCategoriaBinding
 				.inflate(LayoutInflater.from(this));
 
 		categoriaBinding.btnFechar.setOnClickListener(v -> {
@@ -126,8 +133,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 						Categoria categoria = ds.getValue(Categoria.class);
 						categoriaList.add(categoria);
 					}
-				} else {
-
 				}
 				Collections.reverse(categoriaList);
 			}
@@ -142,12 +147,19 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 	private void iniciaComponentes() {
 		binding.edtValorAntigo.setLocale(new Locale("PT", "br"));
 		binding.edtValorAtual.setLocale(new Locale("PT", "br"));
+
+		if (novoProduto){
+			binding.include2.textTitulo.setText("Novo produto");
+		}else{
+			binding.include2.textTitulo.setText("Edição produto");
+		}
 	}
 
 	private void configClicks() {
 		binding.imagemProduto0.setOnClickListener(v -> showBottomSheet(0));
 		binding.imagemProduto1.setOnClickListener(v -> showBottomSheet(1));
 		binding.imagemProduto2.setOnClickListener(v -> showBottomSheet(2));
+		binding.include2.include.ibVoltar.setOnClickListener(v -> finish());
 	}
 
 	private void ocultaTeclado() {
@@ -166,32 +178,38 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		if (!titulo.isEmpty()) {
 			if (!descricao.isEmpty()) {
 				if (valorAtual > 0) {
-					if (produto == null) produto = new Produto();
+					if (!idsCategoriasSelecionadas.isEmpty()){
+						if (produto == null) produto = new Produto();
 
-					produto.setTitulo(titulo);
-					produto.setDescricao(descricao);
-					produto.setValorAtual(valorAtual);
-					if (valorAntigo > 0) {
-						produto.setValorAntigo(valorAntigo);
-					}
+						produto.setTitulo(titulo);
+						produto.setDescricao(descricao);
+						produto.setValorAtual(valorAtual);
+						if (valorAntigo > 0) {
+							produto.setValorAntigo(valorAntigo);
+						}
+						produto.setIdsCategorias(idsCategoriasSelecionadas);
 
-					if (novoProduto) {
-						if (imagemUploadList.size() == 3) {
-							for (int i = 0; i < imagemUploadList.size(); i++) {
-								salvarImagemFirebase(imagemUploadList.get(i));
+						if (novoProduto) {
+							if (imagemUploadList.size() == 3) {
+								for (int i = 0; i < imagemUploadList.size(); i++) {
+									salvarImagemFirebase(imagemUploadList.get(i));
+								}
+							} else {
+								ocultaTeclado();
+								Toast.makeText(this, "Escolha três imagens para o produto.", Toast.LENGTH_SHORT).show();
 							}
 						} else {
-							ocultaTeclado();
-							Toast.makeText(this, "Escolha três imagens para o produto.", Toast.LENGTH_SHORT).show();
-						}
-					} else {
-						if (imagemUploadList.size() > 0) {
-							for (int i = 0; i < imagemUploadList.size(); i++) {
-								salvarImagemFirebase(imagemUploadList.get(i));
+							if (imagemUploadList.size() > 0) {
+								for (int i = 0; i < imagemUploadList.size(); i++) {
+									salvarImagemFirebase(imagemUploadList.get(i));
+								}
+							} else {
+								produto.salvar(false);
 							}
-						} else {
-							produto.salvar(false);
 						}
+					}else{
+						ocultaTeclado();
+						Toast.makeText(this, "Selecione pelo menos uma categoria para o produto", Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					binding.edtValorAtual.setError("Informe um valor válido.");
@@ -464,8 +482,33 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 				.check();
 	}
 
+	private void categoriasSelecionadas() {
+		StringBuilder categorias = new StringBuilder();
+		for (int i = 0; i < categoriaSelecionadaList.size(); i++) {
+			if (i != categoriaSelecionadaList.size() - 1){
+				categorias.append(categoriaSelecionadaList.get(i)).append(", ");
+			}else{
+				categorias.append(categoriaSelecionadaList.get(i));
+			}
+		}
+
+		if (!categoriaSelecionadaList.isEmpty()){
+			binding.btnCategorias.setText(categorias);
+		}else{
+			binding.btnCategorias.setText("Nenhuma categoria selecionada");
+		}
+	}
+
 	@Override
 	public void onClickListener(Categoria categoria) {
+		if (!idsCategoriasSelecionadas.contains(categoria.getId())){
+			idsCategoriasSelecionadas.add(categoria.getId());
+			categoriaSelecionadaList.add(categoria.getNome());
+		}else{
+			idsCategoriasSelecionadas.remove(categoria.getId());
+			categoriaSelecionadaList.remove(categoria.getNome());
+		}
 
+		categoriasSelecionadas();
 	}
 }

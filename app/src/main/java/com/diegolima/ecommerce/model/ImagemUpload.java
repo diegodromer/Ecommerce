@@ -1,6 +1,8 @@
 package com.diegolima.ecommerce.model;
 
-public class ImagemUpload {
+import java.io.Serializable;
+
+public class ImagemUpload implements Serializable {
 	private int index;
 	private String caminhoImagem;
 

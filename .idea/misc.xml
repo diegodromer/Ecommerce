@@ -18,7 +18,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/placeholder_form_categorias.xml" value="0.1095" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_cadastro.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_login.xml" value="0.22" />
-        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_loja_form_produto.xml" value="0.22" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_loja_form_produto.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_main.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_main_empresa.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_main_usuario.xml" value="0.1" />
@@ -29,6 +29,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_delete.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_form_categoria.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_form_produto_categoria.xml" value="0.215625" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_loja_produto.xml" value="0.19895833333333332" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_categoria.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_config.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_produto.xml" value="0.25" />
@@ -38,6 +39,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/ib_voltar.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_categoria_dialog.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_categoria_horizontal.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_produto_adapter.xml" value="0.33" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_selected.xml" value="0.2015625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/toolbar_voltar.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/toolbar_voltar_add.xml" value="0.22" />

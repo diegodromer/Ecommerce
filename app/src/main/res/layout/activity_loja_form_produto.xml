@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,32 +126,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtTitulo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="Título" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:theme="@style/EditTextTheme">
+                    android:text="Título" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtDescricao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="Descrição" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-16dp"
+                    android:inputType="text"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_off"
+                    android:hint="Ex Mochila Adidas"
+                    android:padding="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Descrição" />
+
+                <EditText
+                    android:id="@+id/edtDescricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_off"
+                    android:hint="Ex Mochila grande e muito confortável."
+                    android:padding="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -159,28 +165,63 @@
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
-                    <com.blackcat.currencyedittext.CurrencyEditText
-                        android:id="@+id/edtValorAntigo"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                    <com.blackcat.currencyedittext.CurrencyEditText
-                        android:id="@+id/edtValorAtual"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Valor antigo"/>
+
+                        <com.blackcat.currencyedittext.CurrencyEditText
+                            android:id="@+id/edtValorAntigo"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginStart="-16dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_edit_off"
+                            android:padding="16dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Valor antigo"/>
+
+                        <com.blackcat.currencyedittext.CurrencyEditText
+                            android:id="@+id/edtValorAtual"
+                            android:layout_marginStart="-16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_edit_off"
+                            android:padding="16dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <android.widget.Button
-                    android:onClick="showDialogCategorias"
+                    android:id="@+id/btnCategorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_borda_laranja"
-                    android:text="Nenhuma categoria selecionada" />
+                    android:onClick="showDialogCategorias"
+                    android:text="Nenhuma categoria selecionada"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/darker_gray" />
 
                 <android.widget.Button
                     android:id="@+id/btnLogin"
