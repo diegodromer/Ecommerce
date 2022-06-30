@@ -13,6 +13,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/bg_edit_on.xml" value="0.1" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/ic_carrinho.xml" value="0.117" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/ic_categorias_list.xml" value="0.1" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/ic_editar.xml" value="0.1" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/ic_logo.xml" value="0.1" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/item_selected.xml" value="0.117" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/drawable/placeholder_form_categorias.xml" value="0.1095" />
@@ -29,7 +30,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_delete.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_form_categoria.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_form_produto_categoria.xml" value="0.215625" />
-        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_loja_produto.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_loja_produto.xml" value="0.25" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_categoria.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_config.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/fragment_loja_produto.xml" value="0.25" />

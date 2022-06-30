@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.activity.loja.LojaFormProdutoActivity;
 import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
+import com.diegolima.ecommerce.databinding.DialogLojaProdutoBinding;
 import com.diegolima.ecommerce.databinding.FragmentLojaProdutoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Produto;
@@ -24,13 +26,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.OnClickListener {
-
+	private AlertDialog dialog;
 	private FragmentLojaProdutoBinding binding;
 	private List<Produto> produtoList = new ArrayList<>();
 	private LojaProdutoAdapter lojaProdutoAdapter;
@@ -55,22 +59,20 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 				v -> startActivity(new Intent(requireContext(), LojaFormProdutoActivity.class)));
 	}
 
-	private void recuperaProdutos(){
+	private void recuperaProdutos() {
 		DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
 				.child("produtos");
 		produtoRef.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
-				if (snapshot.exists()){
-					produtoList.clear();
-					for (DataSnapshot ds : snapshot.getChildren()){
-						Produto produto = ds.getValue(Produto.class);
-						produtoList.add(produto);
-					}
-					binding.textInfo.setText("");
-				}else{
-					binding.textInfo.setText("Nenhum produto cadastrado");
+
+				produtoList.clear();
+				for (DataSnapshot ds : snapshot.getChildren()) {
+					Produto produto = ds.getValue(Produto.class);
+					produtoList.add(produto);
 				}
+				listEmpty();
+
 				binding.progressBar.setVisibility(View.GONE);
 				Collections.reverse(produtoList);
 				lojaProdutoAdapter.notifyDataSetChanged();
@@ -83,7 +85,7 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 		});
 	}
 
-	private void configRv(){
+	private void configRv() {
 		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 		binding.rvProdutos.setHasFixedSize(true);
 		lojaProdutoAdapter = new LojaProdutoAdapter(produtoList, requireContext(), this);
@@ -96,8 +98,59 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 		recuperaProdutos();
 	}
 
-	private void showDialog(Produto produto){
+	private void listEmpty() {
+		if (produtoList.isEmpty()) {
+			binding.textInfo.setText("Nenhum produto cadastrado");
+		} else {
+			binding.textInfo.setText("");
+		}
+	}
 
+	private void showDialog(Produto produto) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog);
+
+		DialogLojaProdutoBinding dialogBinding = DialogLojaProdutoBinding
+				.inflate(LayoutInflater.from(requireContext()));
+
+
+		dialogBinding.cbRascunho.setChecked(produto.isRascunho());
+
+
+		for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
+			if (produto.getUrlsImagens().get(i).getIndex() == 0) {
+				Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()
+				).into(dialogBinding.imagemProduto);
+			}
+		}
+
+		dialogBinding.cbRascunho.setOnCheckedChangeListener((check, isChecked) -> {
+			produto.setRascunho(check.isChecked());
+			produto.salvar(false);
+		});
+
+		dialogBinding.btnEditar.setOnClickListener(v -> {
+			Intent intent = new Intent(requireContext(), LojaFormProdutoActivity.class);
+			intent.putExtra("produtoSelecionado", produto);
+			startActivity(intent);
+			dialog.dismiss();
+		});
+
+		dialogBinding.btnRemover.setOnClickListener(v -> {
+			produto.remover();
+			dialog.dismiss();
+			Toast.makeText(requireContext(), "Produto removido com sucesso!", Toast.LENGTH_SHORT).show();
+
+			listEmpty();
+		});
+
+		dialogBinding.txtNomeProduto.setText(produto.getTitulo());
+
+		dialogBinding.btnFechar.setOnClickListener(v -> dialog.dismiss());
+
+		builder.setView(dialogBinding.getRoot());
+
+		dialog = builder.create();
+		dialog.show();
 	}
 
 	@Override

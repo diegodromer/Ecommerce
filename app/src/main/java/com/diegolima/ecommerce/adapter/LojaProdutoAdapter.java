@@ -70,7 +70,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 		public MyViewHolder(@NonNull View itemView) {
 			super(itemView);
 
-			imagemProduto = itemView.findViewById(R.id.imagemProduto);
+			imagemProduto = itemView.findViewById(R.id.cardView);
 			txtNomeProduto = itemView.findViewById(R.id.txtNomeProduto);
 			txtValorProduto = itemView.findViewById(R.id.txtValorProduto);
  			txtDescontoProduto = itemView.findViewById(R.id.txtDescontoProduto);

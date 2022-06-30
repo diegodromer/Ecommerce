@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.CategoriaDialogAdapter;
-import com.diegolima.ecommerce.databinding.ActivityLojaFormProdutoBinding;
 import com.diegolima.ecommerce.databinding.BottomSheetFormProdutoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Categoria;
@@ -40,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,13 +66,13 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 
 	private String currentPhotoPath;
 	private int resultCode = 0;
-	private ActivityLojaFormProdutoBinding binding;
+	private com.diegolima.ecommerce.databinding.ActivityLojaFormProdutoBinding binding;
 	private AlertDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		binding = ActivityLojaFormProdutoBinding.inflate(getLayoutInflater());
+		binding = com.diegolima.ecommerce.databinding.ActivityLojaFormProdutoBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		iniciaComponentes();
 		configClicks();
@@ -80,7 +80,40 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		getExtras();
 	}
 
-	private void getExtras(){
+	private void getExtras() {
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null){
+			produto = (Produto) bundle.getSerializable("produtoSelecionado");
+			configProdutos();
+		}else{
+
+		}
+	}
+
+	private void configuraCategoriasEdicao(){
+		for (Categoria categoria : categoriaList){
+			if (produto.getIdsCategorias().contains(categoria.getId())){
+				categoriaSelecionadaList.add(categoria.getNome());
+			}
+		}
+		Collections.reverse(categoriaSelecionadaList);
+		categoriasSelecionadas();
+	}
+
+	private void configProdutos(){
+		binding.imageFake0.setVisibility(View.GONE);
+		binding.imageFake1.setVisibility(View.GONE);
+		binding.imageFake2.setVisibility(View.GONE);
+
+
+		Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()).into(binding.imagemProduto0);
+		Picasso.get().load(produto.getUrlsImagens().get(1).getCaminhoImagem()).into(binding.imagemProduto1);
+		Picasso.get().load(produto.getUrlsImagens().get(2).getCaminhoImagem()).into(binding.imagemProduto2);
+
+		binding.edtTitulo.setText(produto.getTitulo());
+		binding.edtDescricao.setText(produto.getDescricao());
+		binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo()));
+		binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual()));
 
 	}
 
@@ -91,7 +124,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		categoriaBinding.rvCategorias.setAdapter(categoriaDialogAdapter);
 	}
 
-	public void showDialogCategorias(View view){
+	public void showDialogCategorias(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog2);
 
 		categoriaBinding = com.diegolima.ecommerce.databinding.DialogFormProdutoCategoriaBinding
@@ -105,9 +138,9 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 			dialog.dismiss();
 		});
 
-		if (categoriaList.isEmpty()){
+		if (categoriaList.isEmpty()) {
 			categoriaBinding.textInfo.setText("Nenhuma categoria cadastrada");
-		}else{
+		} else {
 			categoriaBinding.textInfo.setText("");
 		}
 
@@ -133,6 +166,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 						Categoria categoria = ds.getValue(Categoria.class);
 						categoriaList.add(categoria);
 					}
+					configuraCategoriasEdicao();
 				}
 				Collections.reverse(categoriaList);
 			}
@@ -148,9 +182,9 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		binding.edtValorAntigo.setLocale(new Locale("PT", "br"));
 		binding.edtValorAtual.setLocale(new Locale("PT", "br"));
 
-		if (novoProduto){
+		if (novoProduto) {
 			binding.include2.textTitulo.setText("Novo produto");
-		}else{
+		} else {
 			binding.include2.textTitulo.setText("Edição produto");
 		}
 	}
@@ -178,7 +212,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		if (!titulo.isEmpty()) {
 			if (!descricao.isEmpty()) {
 				if (valorAtual > 0) {
-					if (!idsCategoriasSelecionadas.isEmpty()){
+					if (!idsCategoriasSelecionadas.isEmpty()) {
 						if (produto == null) produto = new Produto();
 
 						produto.setTitulo(titulo);
@@ -207,7 +241,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 								produto.salvar(false);
 							}
 						}
-					}else{
+					} else {
 						ocultaTeclado();
 						Toast.makeText(this, "Selecione pelo menos uma categoria para o produto", Toast.LENGTH_SHORT).show();
 					}
@@ -485,26 +519,26 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 	private void categoriasSelecionadas() {
 		StringBuilder categorias = new StringBuilder();
 		for (int i = 0; i < categoriaSelecionadaList.size(); i++) {
-			if (i != categoriaSelecionadaList.size() - 1){
+			if (i != categoriaSelecionadaList.size() - 1) {
 				categorias.append(categoriaSelecionadaList.get(i)).append(", ");
-			}else{
+			} else {
 				categorias.append(categoriaSelecionadaList.get(i));
 			}
 		}
 
-		if (!categoriaSelecionadaList.isEmpty()){
+		if (!categoriaSelecionadaList.isEmpty()) {
 			binding.btnCategorias.setText(categorias);
-		}else{
+		} else {
 			binding.btnCategorias.setText("Nenhuma categoria selecionada");
 		}
 	}
 
 	@Override
 	public void onClickListener(Categoria categoria) {
-		if (!idsCategoriasSelecionadas.contains(categoria.getId())){
+		if (!idsCategoriasSelecionadas.contains(categoria.getId())) {
 			idsCategoriasSelecionadas.add(categoria.getId());
 			categoriaSelecionadaList.add(categoria.getNome());
-		}else{
+		} else {
 			idsCategoriasSelecionadas.remove(categoria.getId());
 			categoriaSelecionadaList.remove(categoria.getNome());
 		}

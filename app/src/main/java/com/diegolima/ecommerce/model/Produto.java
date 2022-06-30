@@ -3,11 +3,13 @@ package com.diegolima.ecommerce.model;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Produto {
+public class Produto implements Serializable {
 	private String id; // Id Firebase
 	private int idLocal; // Id Local
 	private String titulo;
@@ -28,6 +30,22 @@ public class Produto {
 				.child("produtos")
 				.child(this.getId());
 		produtoRef.setValue(this);
+	}
+
+	public void remover(){
+		DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
+				.child("produtos")
+				.child(this.getId());
+		produtoRef.removeValue();
+
+		for (int i = 0; i < getUrlsImagens().size(); i++) {
+			StorageReference storageReference = FirebaseHelper.getStorageReference()
+					.child("imagens")
+					.child("produtos")
+					.child(this.getId())
+					.child("imagem" + i + ".jpeg");
+			storageReference.delete();
+		}
 	}
 
 	public String getId() {
