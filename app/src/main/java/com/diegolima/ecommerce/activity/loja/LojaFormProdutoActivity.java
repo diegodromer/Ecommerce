@@ -85,26 +85,30 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		if (bundle != null){
 			produto = (Produto) bundle.getSerializable("produtoSelecionado");
 			configProdutos();
-		}else{
-
 		}
 	}
 
 	private void configuraCategoriasEdicao(){
-		for (Categoria categoria : categoriaList){
-			if (produto.getIdsCategorias().contains(categoria.getId())){
-				categoriaSelecionadaList.add(categoria.getNome());
+		if (!novoProduto){
+			for (Categoria categoria : categoriaList){
+				if (produto.getIdsCategorias().contains(categoria.getId())){
+					categoriaSelecionadaList.add(categoria.getNome());
+				}
 			}
+			Collections.reverse(categoriaSelecionadaList);
+			categoriasSelecionadas();
 		}
-		Collections.reverse(categoriaSelecionadaList);
-		categoriasSelecionadas();
 	}
 
 	private void configProdutos(){
+
+		novoProduto = false;
+
+		idsCategoriasSelecionadas.addAll(produto.getIdsCategorias());
+
 		binding.imageFake0.setVisibility(View.GONE);
 		binding.imageFake1.setVisibility(View.GONE);
 		binding.imageFake2.setVisibility(View.GONE);
-
 
 		Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()).into(binding.imagemProduto0);
 		Picasso.get().load(produto.getUrlsImagens().get(1).getCaminhoImagem()).into(binding.imagemProduto1);
@@ -112,9 +116,96 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 
 		binding.edtTitulo.setText(produto.getTitulo());
 		binding.edtDescricao.setText(produto.getDescricao());
-		binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo()));
-		binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual()));
+		binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo() * 10));
+		binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual() * 10));
+	}
 
+	private void salvarImagemFirebase(ImagemUpload imagemUpload, int count) {
+
+		int index = imagemUpload.getIndex();
+		String caminhoImagem = imagemUpload.getCaminhoImagem();
+
+		StorageReference storageReference = FirebaseHelper.getStorageReference()
+				.child("imagens")
+				.child("produtos")
+				.child(produto.getId())
+				.child("imagem" + index + ".jpeg");
+
+		UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
+		uploadTask.addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnCompleteListener(task -> {
+
+			imagemUpload.setCaminhoImagem(task.getResult().toString());
+
+			if (novoProduto){
+				produto.getUrlsImagens().add(imagemUpload);
+			}else{
+				produto.getUrlsImagens().set(index, imagemUpload);
+			}
+
+			if (imagemUploadList.size() == (count + 1)) {
+				produto.salvar(novoProduto);
+				imagemUploadList.clear();
+
+				if (novoProduto){
+					finish();
+				}
+			}
+
+		})).addOnFailureListener(e -> Toast.makeText(this, "Ocorreu um erro com o upload, tente novamente", Toast.LENGTH_SHORT).show());
+	}
+
+	public void validaDdos(View view) {
+		String titulo = binding.edtTitulo.getText().toString().trim();
+		String descricao = binding.edtDescricao.getText().toString().trim();
+		double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
+		double valorAtual = (double) binding.edtValorAtual.getRawValue() / 100;
+
+		if (!titulo.isEmpty()) {
+			if (!descricao.isEmpty()) {
+				if (valorAtual > 0) {
+					if (!idsCategoriasSelecionadas.isEmpty()) {
+						if (produto == null) produto = new Produto();
+
+						produto.setTitulo(titulo);
+						produto.setDescricao(descricao);
+						produto.setValorAtual(valorAtual);
+						if (valorAntigo > 0) {
+							produto.setValorAntigo(valorAntigo);
+						}
+						produto.setIdsCategorias(idsCategoriasSelecionadas);
+
+						if (novoProduto) {
+							if (imagemUploadList.size() == 3) {
+								for (int i = 0; i < imagemUploadList.size(); i++) {
+									salvarImagemFirebase(imagemUploadList.get(i), i);
+								}
+							} else {
+								ocultaTeclado();
+								Toast.makeText(this, "Escolha três imagens para o produto.", Toast.LENGTH_SHORT).show();
+							}
+						} else {
+							ocultaTeclado();
+							if (imagemUploadList.size() > 0) {
+								for (int i = 0; i < imagemUploadList.size(); i++) {
+									salvarImagemFirebase(imagemUploadList.get(i), i);
+								}
+							} else {
+								produto.salvar(false);
+							}
+						}
+					} else {
+						ocultaTeclado();
+						Toast.makeText(this, "Selecione pelo menos uma categoria para o produto", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					binding.edtValorAtual.setError("Informe um valor válido.");
+				}
+			} else {
+				binding.edtDescricao.setError("Informação obrigatória.");
+			}
+		} else {
+			binding.edtTitulo.setError("Informação obrigatória.");
+		}
 	}
 
 	private void configRv() {
@@ -201,59 +292,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 				(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(binding.edtTitulo.getWindowToken(),
 				InputMethodManager.HIDE_NOT_ALWAYS);
-	}
-
-	public void validaDdos(View view) {
-		String titulo = binding.edtTitulo.getText().toString().trim();
-		String descricao = binding.edtDescricao.getText().toString().trim();
-		double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
-		double valorAtual = (double) binding.edtValorAtual.getRawValue() / 100;
-
-		if (!titulo.isEmpty()) {
-			if (!descricao.isEmpty()) {
-				if (valorAtual > 0) {
-					if (!idsCategoriasSelecionadas.isEmpty()) {
-						if (produto == null) produto = new Produto();
-
-						produto.setTitulo(titulo);
-						produto.setDescricao(descricao);
-						produto.setValorAtual(valorAtual);
-						if (valorAntigo > 0) {
-							produto.setValorAntigo(valorAntigo);
-						}
-						produto.setIdsCategorias(idsCategoriasSelecionadas);
-
-						if (novoProduto) {
-							if (imagemUploadList.size() == 3) {
-								for (int i = 0; i < imagemUploadList.size(); i++) {
-									salvarImagemFirebase(imagemUploadList.get(i));
-								}
-							} else {
-								ocultaTeclado();
-								Toast.makeText(this, "Escolha três imagens para o produto.", Toast.LENGTH_SHORT).show();
-							}
-						} else {
-							if (imagemUploadList.size() > 0) {
-								for (int i = 0; i < imagemUploadList.size(); i++) {
-									salvarImagemFirebase(imagemUploadList.get(i));
-								}
-							} else {
-								produto.salvar(false);
-							}
-						}
-					} else {
-						ocultaTeclado();
-						Toast.makeText(this, "Selecione pelo menos uma categoria para o produto", Toast.LENGTH_SHORT).show();
-					}
-				} else {
-					binding.edtValorAtual.setError("Informe um valor válido.");
-				}
-			} else {
-				binding.edtDescricao.setError("Informação obrigatória.");
-			}
-		} else {
-			binding.edtTitulo.setError("Informação obrigatória.");
-		}
 	}
 
 	private void showBottomSheet(int code) {
@@ -404,30 +442,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 		} else {
 			imagemUploadList.add(imagemUpload);
 		}
-	}
-
-	private void salvarImagemFirebase(ImagemUpload imagemUpload) {
-
-		int index = imagemUpload.getIndex();
-		String caminhoImagem = imagemUpload.getCaminhoImagem();
-
-		StorageReference storageReference = FirebaseHelper.getStorageReference()
-				.child("imagens")
-				.child("produtos")
-				.child(produto.getId())
-				.child("imagem" + index + ".jpeg");
-
-		UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
-		uploadTask.addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnCompleteListener(task -> {
-
-			imagemUpload.setCaminhoImagem(task.getResult().toString());
-			produto.getUrlsImagens().add(imagemUpload);
-
-			if (imagemUploadList.size() == (index + 1)) {
-				produto.salvar(novoProduto);
-			}
-
-		})).addOnFailureListener(e -> Toast.makeText(this, "Ocorreu um erro com o upload, tente novamente", Toast.LENGTH_SHORT).show());
 	}
 
 	private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
