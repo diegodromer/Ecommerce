@@ -448,9 +448,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 			new ActivityResultContracts.StartActivityForResult(),
 			result -> {
 				if (result.getResultCode() == RESULT_OK) {
-					Bitmap bitmap0;
-					Bitmap bitmap1;
-					Bitmap bitmap2;
 					String caminhoImagem;
 					if (resultCode <= 2) {
 						Uri imagemSelecionada = result.getData().getData();

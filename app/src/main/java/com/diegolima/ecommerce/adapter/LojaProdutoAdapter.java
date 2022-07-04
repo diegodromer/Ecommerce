@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.model.Produto;
+import com.diegolima.ecommerce.util.GetMask;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 			}
 		}
 
-		holder.txtValorProduto.setText(String.valueOf(produto.getValorAtual()));
+		holder.txtValorProduto.setText(String.valueOf(context.getString(R.string.valor, GetMask.getValor(produto.getValorAtual()))));
 
 		holder.itemView.setOnClickListener(v -> onClickListener.OnClick(produto));
 	}

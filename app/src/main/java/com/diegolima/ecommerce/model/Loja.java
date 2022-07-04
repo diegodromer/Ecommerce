@@ -9,17 +9,53 @@ public class Loja {
 	private String nome;
 	private String email;
 	private String senha;
+	private double pedidoMinimo;
+	private double freteGratis;
 	private String publicKey;
+	private String urlLogo;
 	private String accessToken;
+	private String CNPJ;
 	private int parcelas;
 
 	public Loja() {
 	}
 
-	public void salvar(){
+	public void salvar() {
 		DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
 				.child("loja");
 		lojaRef.setValue(this);
+	}
+
+	public double getPedidoMinimo() {
+		return pedidoMinimo;
+	}
+
+	public void setPedidoMinimo(double pedidoMinimo) {
+		this.pedidoMinimo = pedidoMinimo;
+	}
+
+	public double getFreteGratis() {
+		return freteGratis;
+	}
+
+	public void setFreteGratis(double freteGratis) {
+		this.freteGratis = freteGratis;
+	}
+
+	public String getUrlLogo() {
+		return urlLogo;
+	}
+
+	public void setUrlLogo(String urlLogo) {
+		this.urlLogo = urlLogo;
+	}
+
+	public String getCNPJ() {
+		return CNPJ;
+	}
+
+	public void setCNPJ(String CNPJ) {
+		this.CNPJ = CNPJ;
 	}
 
 	public String getId() {

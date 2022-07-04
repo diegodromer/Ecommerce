@@ -122,6 +122,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.navigation:navigation-common:2.4.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.slidingpanelayout:slidingpanelayout:1.2.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.navigation:navigation-ui:2.4.2@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.santalu:maskara:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.github.ParkSangGwon:tedpermission-normal:3.3.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.github.ParkSangGwon:tedpermission:3.3.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.tsuryo:Swipeable-RecyclerView:1.1@aar" level="project" />
