@@ -23,8 +23,6 @@ public class SplashActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-		//FirebaseHelper.getAuth().signOut();
-
 		new Handler(getMainLooper()).postDelayed(this::verificaAcesso, 500);
 	}
 
@@ -47,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 				if (snapshot.exists()){
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}else{
-					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
+					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}
 				finish();
 			}
