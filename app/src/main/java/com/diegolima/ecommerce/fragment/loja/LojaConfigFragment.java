@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.activity.loja.LojaConfigActivity;
 import com.diegolima.ecommerce.activity.loja.LojaRecebimentosActivity;
+import com.diegolima.ecommerce.activity.loja.MainActivityEmpresa;
+import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.databinding.FragmentLojaConfigBinding;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
 
 public class LojaConfigFragment extends Fragment {
 
@@ -38,7 +41,14 @@ public class LojaConfigFragment extends Fragment {
 
 	private void configClicks(){
 		binding.btnConfigLoja.setOnClickListener(v -> startActivity(LojaConfigActivity.class));
+
 		binding.btnPagamentos.setOnClickListener(v -> startActivity(LojaRecebimentosActivity.class));
+
+		binding.btnDeslogar.setOnClickListener(v -> {
+			FirebaseHelper.getAuth().signOut();
+			requireActivity().finish();
+			startActivity(MainActivityUsuario.class);
+		});
 	}
 
 	private void startActivity(Class<?> clazz){

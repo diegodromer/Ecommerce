@@ -114,6 +114,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.picasso:picasso:2.8@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.BlacKCaT27:CurrencyEditText:2.0.2@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jd-alexander:LikeButton:0.2.3@aar" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="Ecommerce.app.main" />
 </module>

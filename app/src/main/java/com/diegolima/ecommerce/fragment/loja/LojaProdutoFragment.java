@@ -59,6 +59,13 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 				v -> startActivity(new Intent(requireContext(), LojaFormProdutoActivity.class)));
 	}
 
+	private void configRv() {
+		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+		binding.rvProdutos.setHasFixedSize(true);
+		lojaProdutoAdapter = new LojaProdutoAdapter(produtoList, requireContext(), this);
+		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
+	}
+
 	private void recuperaProdutos() {
 		DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
 				.child("produtos");
@@ -85,25 +92,18 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 		});
 	}
 
-	private void configRv() {
-		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-		binding.rvProdutos.setHasFixedSize(true);
-		lojaProdutoAdapter = new LojaProdutoAdapter(produtoList, requireContext(), this);
-		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		recuperaProdutos();
-	}
-
 	private void listEmpty() {
 		if (produtoList.isEmpty()) {
 			binding.textInfo.setText("Nenhum produto cadastrado");
 		} else {
 			binding.textInfo.setText("");
 		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		recuperaProdutos();
 	}
 
 	private void showDialog(Produto produto) {

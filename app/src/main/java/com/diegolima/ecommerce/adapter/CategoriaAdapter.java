@@ -1,5 +1,7 @@
 package com.diegolima.ecommerce.adapter;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,15 @@ import java.util.List;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyViewHolder> {
 
+	private int layout;
+	private boolean background;
 	private final List<Categoria> categoriaList;
-
 	private OnClick onClick;
+	private int row_index = 0;
 
-	public CategoriaAdapter(List<Categoria> categoriaList, OnClick onClick) {
+	public CategoriaAdapter(int layout, boolean background, List<Categoria> categoriaList, OnClick onClick) {
+		this.layout = layout;
+		this.background = background;
 		this.categoriaList = categoriaList;
 		this.onClick = onClick;
 	}
@@ -29,7 +35,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 	@NonNull
 	@Override
 	public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categoria_horizontal, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 		return new MyViewHolder(view);
 	}
 
@@ -37,10 +43,30 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 	public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 		Categoria categoria = categoriaList.get(position);
 
+		if (background) {
+
+			holder.itemView.setOnClickListener(v -> {
+				onClick.onClickListener(categoria);
+				row_index = holder.getAdapterPosition();
+				notifyDataSetChanged();
+			});
+
+			if (row_index == holder.getAdapterPosition()) {
+				holder.itemView.setBackgroundResource(R.drawable.bg_categoria_home);
+				holder.nomeCategoria.setTextColor(Color.parseColor("#FFFFFF"));
+				holder.imagemCategoria.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+			} else {
+				holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+				holder.nomeCategoria.setTextColor(Color.parseColor("#808080"));
+				holder.imagemCategoria.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+			}
+		} else {
+			holder.itemView.setOnClickListener(v -> onClick.onClickListener(categoria));
+		}
+
 		holder.nomeCategoria.setText(categoria.getNome());
 		Picasso.get().load(categoria.getUrlImagem()).into(holder.imagemCategoria);
 
-		holder.itemView.setOnClickListener(v -> onClick.onClickListener(categoria));
 	}
 
 	@Override
@@ -48,7 +74,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 		return categoriaList.size();
 	}
 
-	public interface OnClick{
+	public interface OnClick {
 		public void onClickListener(Categoria categoria);
 	}
 
