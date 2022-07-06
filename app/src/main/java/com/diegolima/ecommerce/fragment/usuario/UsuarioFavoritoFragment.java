@@ -2,65 +2,147 @@ package com.diegolima.ecommerce.fragment.usuario;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
+import com.diegolima.ecommerce.databinding.FragmentUsuarioFavoritoBinding;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
+import com.diegolima.ecommerce.model.Favorito;
+import com.diegolima.ecommerce.model.Produto;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UsuarioFavoritoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UsuarioFavoritoFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
+public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdapter.OnClickListener, LojaProdutoAdapter.OnClickFavorito {
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	FragmentUsuarioFavoritoBinding binding;
 
-	public UsuarioFavoritoFragment() {
-		// Required empty public constructor
-	}
+	private DatabaseReference favoritoRef;
+	private ValueEventListener eventListener;
 
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment UsuarioFavoritoFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static UsuarioFavoritoFragment newInstance(String param1, String param2) {
-		UsuarioFavoritoFragment fragment = new UsuarioFavoritoFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
+	private final List<Produto> produtoList = new ArrayList<>();
+	private final List<String> idsFavoritos = new ArrayList<>();
+
+	private LojaProdutoAdapter lojaProdutoAdapter;
+
+
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		binding = FragmentUsuarioFavoritoBinding.inflate(inflater, container, false);
+		return binding.getRoot();
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		configRvProdutos();
+		recuperaFavoritos();
+	}
+
+	private void recuperaFavoritos() {
+		if (FirebaseHelper.getAutenticado()){
+			favoritoRef = FirebaseHelper.getDatabaseReference()
+					.child("favoritos")
+					.child(FirebaseHelper.getIdFirebase());
+			eventListener = favoritoRef.addValueEventListener(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot snapshot) {
+					idsFavoritos.clear();
+					for (DataSnapshot ds : snapshot.getChildren()){
+						String idFavorito = ds.getValue(String.class);
+						idsFavoritos.add(idFavorito);
+					}
+					Collections.reverse(idsFavoritos);
+					listEmpty();
+				}
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError error) {
+
+				}
+			});
+		}
+	}
+
+	private void configRvProdutos() {
+		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+		binding.rvProdutos.setHasFixedSize(true);
+		lojaProdutoAdapter = new LojaProdutoAdapter(produtoList, requireContext(), true,idsFavoritos, this, this);
+		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
+	}
+
+	private void recuperaProdutos() {
+		produtoList.clear();
+		for (int i = 0; i < idsFavoritos.size(); i++) {
+			DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
+					.child("produtos")
+					.child(idsFavoritos.get(i));
+			produtoRef.addValueEventListener(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot snapshot) {
+					Produto produto = snapshot.getValue(Produto.class);
+					produtoList.add(produto);
+					if (produtoList.size() == idsFavoritos.size()){
+						binding.progressBar.setVisibility(View.GONE);
+						lojaProdutoAdapter.notifyDataSetChanged();
+					}
+				}
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError error) {
+
+				}
+			});
+		}
+	}
+
+	private void listEmpty() {
+		if (idsFavoritos.isEmpty()) {
+			binding.progressBar.setVisibility(View.GONE);
+			binding.textInfo.setText("Nenhum produto na sua lista de desejo.");
+		} else {
+			binding.textInfo.setText("");
+			recuperaProdutos();
 		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_usuario_favorito, container, false);
+	public void onDestroyView() {
+		super.onDestroyView();
+		favoritoRef.removeEventListener(eventListener);
+		binding = null;
+	}
+
+	@Override
+	public void OnClick(Produto produto) {
+
+	}
+
+	@Override
+	public void OnClickFavorito(Produto produto) {
+		if (!idsFavoritos.contains(produto.getId())){
+			idsFavoritos.add(produto.getId());
+			produtoList.add(produto);
+		}else {
+			idsFavoritos.remove(produto.getId());
+			produtoList.remove(produto);
+		}
+		Favorito.salvar(idsFavoritos);
+
+		lojaProdutoAdapter.notifyDataSetChanged();
 	}
 }

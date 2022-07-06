@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.usuario.DetalhesProdutosActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/toolbar_voltar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/sliderView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginHorizontal="24dp"
+                android:paddingTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#9F9A9A"
+                app:sliderIndicatorUnselectedColor="@color/color_laranja"
+                app:sliderScrollTimeInSec="1"
+                app:sliderStartAutoCycle="true" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#404040"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/sliderView"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toBottomOf="@+id/sliderView"
+                tools:text="Bicicleta South Stark 2021 Aro 29 Alumínio Freio a disco Câmbio Importado 24 marchas" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Descrição"
+                android:textColor="@color/color_laranja"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="#808080"
+                app:layout_constraintEnd_toEndOf="@id/sliderView"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                tools:text="A perfeita escolha para quem está começando no mundo das bikes, excelente desde a trilha leve até passeios e pedais na estrada, muito utilizada como meio de transporte, leve e resistente possui componentes de qualidade e que atendem todas suas necessidades, do freio a disco a suspensão." />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Produtos similares"
+                android:textColor="@color/color_laranja"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+
+                tools:itemCount="10"
+                tools:listitem="@layout/item_produto_similar_adapter"
+                tools:orientation="horizontal"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:scrollbars="none"
+
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/sliderView"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_add_carrinho"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.widget.Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_add"
+            android:paddingHorizontal="16dp"
+            android:text="Comprar"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/likeButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:elevation="5dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/button"
+            app:layout_constraintStart_toStartOf="@+id/button"
+            app:layout_constraintTop_toTopOf="@+id/button"
+            tools:text="R$ 199,99" />
+
+        <com.like.LikeButton
+            android:id="@+id/likeButton"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_like_button"
+            app:anim_scale_factor="2"
+            app:icon_size="25dp"
+            app:icon_type="Star"
+            android:layout_marginEnd="24dp"
+            app:is_enabled="true"
+            app:layout_constraintBottom_toBottomOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button"
+            app:like_drawable="@drawable/ic_favorite"
+            app:liked="false"
+            app:unlike_drawable="@drawable/ic_favorite_border" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

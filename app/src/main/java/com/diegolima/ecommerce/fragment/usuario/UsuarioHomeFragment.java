@@ -1,5 +1,6 @@
 package com.diegolima.ecommerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.activity.usuario.DetalhesProdutosActivity;
 import com.diegolima.ecommerce.adapter.CategoriaAdapter;
 import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioHomeBinding;
@@ -83,7 +85,6 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 			});
 		}
 	}
-
 
 	private void configRvCategorias() {
 		binding.rvCategorias.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -170,15 +171,17 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
 	@Override
 	public void OnClick(Produto produto) {
-
+		Intent intent = new Intent(requireContext(), DetalhesProdutosActivity.class);
+		intent.putExtra("produtoSelecionado", produto);
+		startActivity(intent);
 	}
 
 	@Override
-	public void OnClickFavorito(String idProduto) {
-		if (!idsFavoritos.contains(idProduto)){
-			idsFavoritos.add(idProduto);
+	public void OnClickFavorito(Produto produto) {
+		if (!idsFavoritos.contains(produto.getId())){
+			idsFavoritos.add(produto.getId());
 		}else {
-			idsFavoritos.remove(idProduto);
+			idsFavoritos.remove(produto.getId());
 		}
 		Favorito.salvar(idsFavoritos);
 	}

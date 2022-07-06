@@ -77,7 +77,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 			@Override
 			public void liked(LikeButton likeButton) {
 				if (FirebaseHelper.getAutenticado()) {
-					onClickFavorito.OnClickFavorito(produto.getId());
+					onClickFavorito.OnClickFavorito(produto);
 				} else {
 					Toast.makeText(context, "Você não está autenticado no app.", Toast.LENGTH_SHORT).show();
 					holder.likeButton.setLiked(false);
@@ -86,7 +86,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 
 			@Override
 			public void unLiked(LikeButton likeButton) {
-				onClickFavorito.OnClickFavorito(produto.getId());
+				onClickFavorito.OnClickFavorito(produto);
 			}
 		});
 
@@ -111,7 +111,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 	}
 
 	public interface OnClickFavorito {
-		void OnClickFavorito(String idProduto);
+		void OnClickFavorito(Produto produto);
 	}
 
 	static class MyViewHolder extends RecyclerView.ViewHolder {
