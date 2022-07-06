@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activity.usuario.DetalhesProdutosActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_voltar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollView8"
         android:layout_width="0dp"
@@ -14,18 +21,11 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <include
-                android:id="@+id/include"
-                layout="@layout/toolbar_voltar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/sliderView"
@@ -46,13 +46,13 @@
                 app:sliderIndicatorOrientation="horizontal"
                 app:sliderIndicatorPadding="3dp"
                 app:sliderIndicatorRadius="2dp"
-                app:sliderIndicatorSelectedColor="#9F9A9A"
-                app:sliderIndicatorUnselectedColor="@color/color_laranja"
+                app:sliderIndicatorSelectedColor="@color/color_laranja"
+                app:sliderIndicatorUnselectedColor="#9F9A9A"
                 app:sliderScrollTimeInSec="1"
                 app:sliderStartAutoCycle="true" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textProduto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -75,10 +75,10 @@
                 android:textColor="@color/color_laranja"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/sliderView"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textProduto" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/textDescricao"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -99,25 +99,24 @@
                 android:textColor="@color/color_laranja"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/sliderView"
-                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                app:layout_constraintTop_toBottomOf="@+id/textDescricao" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProdutos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-
-                tools:itemCount="10"
-                tools:listitem="@layout/item_produto_similar_adapter"
-                tools:orientation="horizontal"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:scrollbars="none"
-
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/sliderView"
                 app:layout_constraintStart_toStartOf="@+id/sliderView"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                tools:itemCount="10"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_produto_similar_adapter"
+                tools:orientation="horizontal"
+                tools:scrollbars="none" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -150,6 +149,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textValor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -163,14 +163,15 @@
 
         <com.like.LikeButton
             android:id="@+id/likeButton"
-            android:layout_width="50dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bg_like_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="8dp"
             app:anim_scale_factor="2"
-            app:icon_size="25dp"
+            app:icon_size="20dp"
             app:icon_type="Star"
-            android:layout_marginEnd="24dp"
             app:is_enabled="true"
+            android:background="@drawable/bg_like_button"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/button"

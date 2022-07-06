@@ -58,8 +58,13 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 		configRvProdutos();
 
 		recuperaCategorias();
-		recuperaProdutos();
 		recuperaFavoritos();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		recuperaProdutos();
 	}
 
 	private void recuperaFavoritos() {
@@ -96,7 +101,7 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 	private void configRvProdutos() {
 		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 		binding.rvProdutos.setHasFixedSize(true);
-		lojaProdutoAdapter = new LojaProdutoAdapter(produtoList, requireContext(), true,idsFavoritos, this, this);
+		lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_adapter, produtoList, requireContext(), true,idsFavoritos, this, this);
 		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
 	}
 
