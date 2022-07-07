@@ -14,6 +14,7 @@
         android:background="@drawable/bg_pesquisa"
         android:inputType="textCapSentences"
         app:iconifiedByDefault="false"
+        android:theme="@style/Search_View_Theme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

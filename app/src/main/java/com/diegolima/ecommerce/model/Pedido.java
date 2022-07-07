@@ -3,10 +3,11 @@ package com.diegolima.ecommerce.model;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido {
+public class Pedido implements Serializable {
 	private String id;
 	private int status; // 1 -> Pendente, 2 -> Aprovado, 3 -> Cancelado
 	private String idCliente;

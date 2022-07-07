@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.diegolima.ecommerce.DAO.ItemDAO;
+import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
 import com.diegolima.ecommerce.adapter.SliderAdapter;
 import com.diegolima.ecommerce.databinding.ActivityDetalhesProdutosBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Favorito;
+import com.diegolima.ecommerce.model.ItemPedido;
 import com.diegolima.ecommerce.model.Produto;
 import com.diegolima.ecommerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
@@ -42,11 +45,18 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 
 	private Produto produtoSelecionado;
 
+	private ItemDAO itemDAO;
+	private ItemPedidoDAO itemPedidoDAO;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		binding = ActivityDetalhesProdutosBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		itemDAO = new ItemDAO(this);
+		itemPedidoDAO = new ItemPedidoDAO(this);
+
 
 		configClicks();
 		getExtra();
@@ -114,6 +124,20 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 				Favorito.salvar(idsFavoritos);
 			}
 		});
+
+		binding.btnAddCarrinho.setOnClickListener(v -> {
+			addCarrinho();
+		});
+	}
+
+	private void addCarrinho(){
+		ItemPedido itemPedido = new ItemPedido();
+		itemPedido.setIdProduto(produtoSelecionado.getId());
+		itemPedido.setQuantidade(1);
+		itemPedido.setValor(produtoSelecionado.getValorAtual());
+
+		itemPedidoDAO.salvar(itemPedido);
+		itemDAO.salvar(produtoSelecionado);
 	}
 
 	private void recuperaFavoritos() {
