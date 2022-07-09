@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textValor">
 
                 <ImageButton
-                    android:id="@+id/ibRemover"
+                    android:id="@+id/ibMenos"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:background="@drawable/bg_borda_cinza"
