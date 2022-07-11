@@ -18,6 +18,7 @@ import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.CarrinhoAdapter;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioCarrinhoBinding;
 import com.diegolima.ecommerce.model.ItemPedido;
+import com.diegolima.ecommerce.model.Produto;
 import com.diegolima.ecommerce.util.GetMask;
 
 import java.util.ArrayList;
@@ -56,22 +57,64 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 		configRv();
 	}
 
-	private void configSaldoCarrinho(){
+	private void configTotalCarrinho() {
 		binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalCarrinho())));
 	}
 
-	private void configRv(){
+	private void configRv() {
 		Collections.reverse(itemPedidoList);
 		binding.rvProdutos.setLayoutManager(new LinearLayoutManager(requireContext()));
 		binding.rvProdutos.setHasFixedSize(true);
 		carrinhoAdapter = new CarrinhoAdapter(itemPedidoList, itemPedidoDAO, requireContext(), this);
 		binding.rvProdutos.setAdapter(carrinhoAdapter);
 
-		configSaldoCarrinho();
+		configTotalCarrinho();
 	}
 
 	@Override
 	public void onClickLister(int position, String operacao) {
+
+		switch (operacao) {
+			case "detalhe":
+				break;
+			case "remover":
+				break;
+			case "menos":
+			case "mais":
+				configQtdProduto(position, operacao);
+				break;
+		}
+	}
+
+	private void configQtdProduto(int position, String operacao) {
+
+		ItemPedido itemPedido = itemPedidoList.get(position);
+
+		if (operacao.equals("mais")) { // +
+
+			itemPedido.setQuantidade(itemPedido.getQuantidade() + 1);
+
+			itemPedidoDAO.atualizar(itemPedido);
+
+			itemPedidoList.set(position, itemPedido);
+
+		} else { // -
+
+			if (itemPedido.getQuantidade() > 1) {
+
+				itemPedido.setQuantidade(itemPedido.getQuantidade() - 1);
+
+				itemPedidoDAO.atualizar(itemPedido);
+
+				itemPedidoList.set(position, itemPedido);
+
+			}
+
+		}
+
+		carrinhoAdapter.notifyDataSetChanged();
+
+		configTotalCarrinho();
 
 	}
 }
