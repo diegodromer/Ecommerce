@@ -6,25 +6,16 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/btnFechar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:src="@drawable/ic_fechar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="16dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFechar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imagemProduto"
@@ -45,7 +36,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,27 +61,26 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btnCancelar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
-                <CheckBox
-                    android:id="@+id/cbRascunho"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:tint="@color/color_delete"
                     android:layout_gravity="center"
-                    android:buttonTint="#0Ac5E3"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp" />
+                    android:src="@drawable/ic_cancelar" />
 
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rascunho"
+                android:text="Fechar"
                 android:textAlignment="center" />
         </LinearLayout>
 
@@ -102,25 +92,36 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/btnEditar"
+                android:id="@+id/btnAddFavorito"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <com.like.LikeButton
+                    android:id="@+id/likeButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_editar" />
+                    app:anim_scale_factor="2"
+                    app:icon_size="30dp"
+                    app:icon_type="Star"
+                    app:is_enabled="true"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView"
+                    app:layout_constraintTop_toTopOf="@+id/cardView"
+                    app:like_drawable="@drawable/ic_favorite"
+                    app:liked="false"
+                    app:unlike_drawable="@drawable/ic_favorite_border" />
+
 
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Editar"
+                android:text="Favoritos"
                 android:textAlignment="center" />
         </LinearLayout>
 

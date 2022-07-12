@@ -53,22 +53,24 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		configRvCategorias();
 		configRvProdutos();
-
-		recuperaCategorias();
-		recuperaFavoritos();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
+		recuperaDados();
+	}
+
+	private void recuperaDados(){
+		recuperaCategorias();
 		recuperaProdutos();
+		recuperaFavoritos();
 	}
 
 	private void recuperaFavoritos() {
-		if (FirebaseHelper.getAutenticado()){
+		if (FirebaseHelper.getAutenticado()) {
 			DatabaseReference favoritoRef = FirebaseHelper.getDatabaseReference()
 					.child("favoritos")
 					.child(FirebaseHelper.getIdFirebase());
@@ -76,11 +78,10 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 				@Override
 				public void onDataChange(@NonNull DataSnapshot snapshot) {
 					idsFavoritos.clear();
-					for (DataSnapshot ds : snapshot.getChildren()){
+					for (DataSnapshot ds : snapshot.getChildren()) {
 						String idFavorito = ds.getValue(String.class);
 						idsFavoritos.add(idFavorito);
 					}
-					categoriaAdapter.notifyDataSetChanged();
 				}
 
 				@Override
@@ -101,7 +102,7 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 	private void configRvProdutos() {
 		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 		binding.rvProdutos.setHasFixedSize(true);
-		lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_adapter, produtoList, requireContext(), true,idsFavoritos, this, this);
+		lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_adapter, produtoList, requireContext(), true, idsFavoritos, this, this);
 		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
 	}
 
@@ -147,7 +148,7 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 				categoriaList.clear();
-				for (DataSnapshot ds : snapshot.getChildren()){
+				for (DataSnapshot ds : snapshot.getChildren()) {
 					Categoria categoria = ds.getValue(Categoria.class);
 					categoriaList.add(categoria);
 				}
@@ -183,9 +184,9 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
 	@Override
 	public void OnClickFavorito(Produto produto) {
-		if (!idsFavoritos.contains(produto.getId())){
+		if (!idsFavoritos.contains(produto.getId())) {
 			idsFavoritos.add(produto.getId());
-		}else {
+		} else {
 			idsFavoritos.remove(produto.getId());
 		}
 		Favorito.salvar(idsFavoritos);

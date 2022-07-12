@@ -1,6 +1,10 @@
 package com.diegolima.ecommerce.fragment.usuario;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,18 +12,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.diegolima.ecommerce.DAO.ItemDAO;
 import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.CarrinhoAdapter;
+import com.diegolima.ecommerce.databinding.DialogRemoverCarrinhoBinding;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioCarrinhoBinding;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
+import com.diegolima.ecommerce.model.Favorito;
 import com.diegolima.ecommerce.model.ItemPedido;
 import com.diegolima.ecommerce.model.Produto;
 import com.diegolima.ecommerce.util.GetMask;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +65,7 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 		itemPedidoList.addAll(itemPedidoDAO.getList());
 
 		configRv();
+		recuperaFavoritos();
 	}
 
 	private void configTotalCarrinho() {
@@ -72,12 +83,46 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		configInfo();
+	}
+
+	private void recuperaFavoritos() {
+		if (FirebaseHelper.getAutenticado()){
+			DatabaseReference favoritoRef = FirebaseHelper.getDatabaseReference()
+					.child("favoritos")
+					.child(FirebaseHelper.getIdFirebase());
+			favoritoRef.addValueEventListener(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot snapshot) {
+					idsFavoritos.clear();
+					for (DataSnapshot ds : snapshot.getChildren()){
+						String idFavorito = ds.getValue(String.class);
+						idsFavoritos.add(idFavorito);
+					}
+				}
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError error) {
+
+				}
+			});
+		}
+	}
+
+	@Override
 	public void onClickLister(int position, String operacao) {
+
+		int idProduto = itemPedidoList.get(position).getId();
+		Produto produto = itemPedidoDAO.getProduto(idProduto);
+
 
 		switch (operacao) {
 			case "detalhe":
 				break;
 			case "remover":
+				showDialogRemover(produto, position);
 				break;
 			case "menos":
 			case "mais":
@@ -116,5 +161,85 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
 		configTotalCarrinho();
 
+	}
+
+	private void showDialogRemover(Produto produto, int position) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog);
+
+		DialogRemoverCarrinhoBinding dialogBinding = DialogRemoverCarrinhoBinding
+				.inflate(LayoutInflater.from(requireContext()));
+
+		dialogBinding.likeButton.setLiked(idsFavoritos.contains(produto.getId()));
+
+		dialogBinding.likeButton.setOnLikeListener(new OnLikeListener() {
+			@Override
+			public void liked(LikeButton likeButton) {
+				if (FirebaseHelper.getAutenticado()) {
+					salvarFavorito(produto);
+				} else {
+					Toast.makeText(requireContext(), "Você não está autenticado no app.", Toast.LENGTH_SHORT).show();
+					dialogBinding.likeButton.setLiked(false);
+				}
+			}
+
+			@Override
+			public void unLiked(LikeButton likeButton) {
+				salvarFavorito(produto);
+			}
+		});
+
+		Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()
+		).into(dialogBinding.imagemProduto);
+
+		dialogBinding.txtNomeProduto.setText(produto.getTitulo());
+
+		dialogBinding.btnCancelar.setOnClickListener(v -> dialog.dismiss());
+
+		dialogBinding.btnAddFavorito.setOnClickListener(v -> {
+			dialog.dismiss();
+		});
+
+		dialogBinding.btnRemover.setOnClickListener(v -> {
+			removerProdutoCarrinho(position);
+			dialog.dismiss();
+			Toast.makeText(requireContext(), "Produto removido com sucesso!", Toast.LENGTH_SHORT).show();
+		});
+
+
+		builder.setView(dialogBinding.getRoot());
+
+		dialog = builder.create();
+		dialog.show();
+	}
+
+	private void salvarFavorito(Produto produto){
+		if (!idsFavoritos.contains(produto.getId())) {
+			idsFavoritos.add(produto.getId());
+		} else {
+			idsFavoritos.remove(produto.getId());
+		}
+		Favorito.salvar(idsFavoritos);
+	}
+
+	private void removerProdutoCarrinho(int position) {
+		ItemPedido itemPedido = itemPedidoList.get(position);
+		itemPedidoList.remove(itemPedido);
+
+		itemPedidoDAO.remover(itemPedido);
+		itemDAO.remover(itemPedido);
+
+		carrinhoAdapter.notifyDataSetChanged();
+
+		configInfo();
+
+		configTotalCarrinho();
+	}
+
+	private void configInfo(){
+		if (itemPedidoList.isEmpty()){
+			binding.textInfo.setVisibility(View.VISIBLE);
+		}else{
+			binding.textInfo.setVisibility(View.GONE);
+		}
 	}
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.diegolima.ecommerce.model.ItemPedido;
 import com.diegolima.ecommerce.model.Produto;
 
 public class ItemDAO {
@@ -38,5 +39,20 @@ public class ItemDAO {
 		}
 
 		return idRetorno;
+	}
+
+	public boolean remover(ItemPedido itemPedido) {
+
+		String where = "id=?";
+		String[] args = {String.valueOf(itemPedido.getId())};
+
+		try {
+			write.delete(DBHelper.TABELA_ITEM, where, args);
+			Log.i("INFODB:", "Sucesso ao remover o itemPedido");
+		} catch (Exception e) {
+			Log.e("INFODB:", "Erro ao remover o itemPedido: " + e.getMessage());
+			return false;
+		}
+		return true;
 	}
 }
