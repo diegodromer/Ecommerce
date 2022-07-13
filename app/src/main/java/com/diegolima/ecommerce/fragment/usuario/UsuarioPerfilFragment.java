@@ -29,7 +29,7 @@ public class UsuarioPerfilFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		binding.btnLogin.setOnClickListener(v -> {
+		binding.btnDeslogar.setOnClickListener(v -> {
 			startActivity(new Intent(getActivity(), LoginActivity.class));
 		});
 	}
