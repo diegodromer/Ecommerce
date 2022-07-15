@@ -103,8 +103,8 @@ public class LoginActivity extends AppCompatActivity {
 		binding.btnRecuperaSenha.setOnClickListener(view ->
 				startActivity(new Intent(this, RecuperaContaActivity.class)));
 
-		binding.include.ibVoltar.setOnClickListener(view ->
-				startActivity(new Intent(this, MainActivityUsuario.class)));
+		binding.include.ibVoltar.setOnClickListener(view -> finish());
+//				startActivity(new Intent(this, MainActivityUsuario.class)));
 
 		binding.btnCadastro.setOnClickListener(view -> {
 			Intent intent = new Intent(this, CadastroActivity.class);

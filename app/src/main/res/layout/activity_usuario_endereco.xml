@@ -7,17 +7,23 @@
     tools:context=".activity.usuario.UsuarioEnderecoActivity">
 
     <include
-        android:id="@+id/include4"
+        android:id="@+id/include"
         layout="@layout/toolbar_voltar_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+        android:id="@+id/rvEnderecos"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include4" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:leftBgColor="@color/color_laranja"
+        app:leftImage="@drawable/ic_delete"
+        app:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include4">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -42,14 +48,5 @@
             android:layout_marginTop="8dp"
             android:text="Carregando..."
             android:textAlignment="center" />
-
-        <com.tsuryo.swipeablerv.SwipeableRecyclerView
-            android:id="@+id/rvCategorias"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:leftBgColor="@color/color_delete"
-            app:leftImage="@drawable/ic_delete"
-            app:textColor="@android:color/white"
-            app:textSize="20sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
