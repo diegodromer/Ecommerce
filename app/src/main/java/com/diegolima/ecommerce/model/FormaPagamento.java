@@ -3,7 +3,9 @@ package com.diegolima.ecommerce.model;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 
-public class FormaPagamento {
+import java.io.Serializable;
+
+public class FormaPagamento implements Serializable {
 
 	private String id;
 	private String nome;
