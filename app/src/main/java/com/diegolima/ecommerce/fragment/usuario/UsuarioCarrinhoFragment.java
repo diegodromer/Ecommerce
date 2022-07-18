@@ -1,5 +1,6 @@
 package com.diegolima.ecommerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.diegolima.ecommerce.DAO.ItemDAO;
 import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.activity.usuario.UsuarioResumoPedidoActivity;
 import com.diegolima.ecommerce.adapter.CarrinhoAdapter;
+import com.diegolima.ecommerce.autenticacao.LoginActivity;
 import com.diegolima.ecommerce.databinding.DialogRemoverCarrinhoBinding;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioCarrinhoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
@@ -66,10 +69,23 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
 		configRv();
 		recuperaFavoritos();
+		configClicks();
+	}
+
+	private void configClicks(){
+		binding.btnContinuar.setOnClickListener(v -> {
+			Intent intent;
+			if (FirebaseHelper.getAutenticado()){
+				intent = new Intent(requireContext(), UsuarioResumoPedidoActivity.class);
+			}else{
+				intent = new Intent(requireContext(), LoginActivity.class);
+			}
+			startActivity(intent);
+		});
 	}
 
 	private void configTotalCarrinho() {
-		binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalCarrinho())));
+		binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
 	}
 
 	private void configRv() {

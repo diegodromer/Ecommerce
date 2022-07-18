@@ -151,7 +151,7 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 			}
 		});
 
-		binding.btnAddCarrinho.setOnClickListener(v -> showDialogCarrinho());
+		binding.btnContinuar.setOnClickListener(v -> showDialogCarrinho());
 	}
 
 	private void addCarrinho(){

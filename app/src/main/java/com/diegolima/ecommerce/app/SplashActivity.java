@@ -24,14 +24,15 @@ public class SplashActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_splash);
 
 		new Handler(getMainLooper()).postDelayed(this::verificaAcesso, 500);
+
 	}
 
 	private void verificaAcesso(){
-		if (FirebaseHelper.getAutenticado()){
+		if(FirebaseHelper.getAutenticado()){
 			recuperaAcesso();
-		}else{
-			startActivity(new Intent(this, MainActivityUsuario.class));
+		}else {
 			finish();
+			startActivity(new Intent(this, MainActivityUsuario.class));
 		}
 	}
 
@@ -42,9 +43,10 @@ public class SplashActivity extends AppCompatActivity {
 		usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
-				if (snapshot.exists()){
+				if(snapshot.exists()){ // Usuário
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
-				}else{
+				}else { // Loja
+//					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}
 				finish();

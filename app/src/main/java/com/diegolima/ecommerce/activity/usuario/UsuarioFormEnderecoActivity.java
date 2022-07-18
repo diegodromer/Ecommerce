@@ -84,7 +84,12 @@ public class UsuarioFormEnderecoActivity extends AppCompatActivity {
 								endereco.salvar();
 								binding.progressBar.setVisibility(View.GONE);
 
-								if (novoEndereco) finish();
+								if (novoEndereco) {
+									Intent intent = new Intent();
+									intent.putExtra("enderecoCadastrado", endereco);
+									setResult(RESULT_OK, intent);
+									finish();
+								}
 							} else {
 								binding.edtMunicipio.requestFocus();
 								binding.edtMunicipio.setError("Informação obrigatória.");

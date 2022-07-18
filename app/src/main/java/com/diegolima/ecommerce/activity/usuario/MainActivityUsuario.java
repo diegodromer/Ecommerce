@@ -26,13 +26,16 @@ public class MainActivityUsuario extends AppCompatActivity {
 		binding = ActivityMainUsuarioBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+		NavHostFragment navHostFragment =
+				(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 		NavController navController = navHostFragment.getNavController();
-		NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+		NavigationUI.setupWithNavController(binding.bottomNavigationView ,navController);
 
 		int id = getIntent().getIntExtra("id", 0);
-		if (id == 2){
+
+		if(id == 2){
 			binding.bottomNavigationView.setSelectedItemId(R.id.menu_carrinho);
 		}
+
 	}
 }

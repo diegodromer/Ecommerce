@@ -10,25 +10,21 @@
         android:name="com.diegolima.ecommerce.fragment.usuario.UsuarioHomeFragment"
         android:label="fragment_usuario_home"
         tools:layout="@layout/fragment_usuario_home" />
-
     <fragment
         android:id="@+id/menu_pedido"
         android:name="com.diegolima.ecommerce.fragment.usuario.UsuarioPedidoFragment"
         android:label="fragment_usuario_pedido"
         tools:layout="@layout/fragment_usuario_pedido" />
-
     <fragment
         android:id="@+id/menu_carrinho"
         android:name="com.diegolima.ecommerce.fragment.usuario.UsuarioCarrinhoFragment"
         android:label="fragment_usuario_carrinho"
         tools:layout="@layout/fragment_usuario_carrinho" />
-
     <fragment
         android:id="@+id/menu_favorito"
         android:name="com.diegolima.ecommerce.fragment.usuario.UsuarioFavoritoFragment"
         android:label="fragment_usuario_favorito"
         tools:layout="@layout/fragment_usuario_favorito" />
-
     <fragment
         android:id="@+id/menu_perfil"
         android:name="com.diegolima.ecommerce.fragment.usuario.UsuarioPerfilFragment"
