@@ -51,6 +51,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_usuario_form_endereco.xml" value="0.3625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_usuario_resumo_pedido.xml" value="0.3645833333333333" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_usuario_seleciona_endereco.xml" value="0.25" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/activity_usuario_seleciona_pagamento.xml" value="0.36041666666666666" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/bottom_sheet_form_produto.xml" value="0.215625" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_add_item_carrinho.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/dialog_delete.xml" value="0.25" />
@@ -75,6 +76,7 @@
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_categoria_vertical.xml" value="0.3212962962962963" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_endereco_adapter.xml" value="0.36770833333333336" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_forma_pagamento_adapter.xml" value="0.5" />
+        <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_pagamento_pedido_adapter.xml" value="0.36041666666666666" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_produto_adapter.xml" value="0.33" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_produto_similar_adapter.xml" value="0.35989583333333336" />
         <entry key="..\:/Users/diego/AndroidStudioProjects/Ecommerce/app/src/main/res/layout/item_selecao_endereco_adapter.xml" value="0.25" />

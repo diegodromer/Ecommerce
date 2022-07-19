@@ -1,13 +1,13 @@
 package com.diegolima.ecommerce.activity.loja;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.databinding.ActivityLojaFormPagamentoBinding;
@@ -89,7 +89,12 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
 					binding.progressBar.setVisibility(View.GONE);
 					Toast.makeText(this, "Selecione o tipo do valor.", Toast.LENGTH_SHORT).show();
 				}
-				if (novoPagamento) finish();
+				if (novoPagamento) {
+					Intent intent = new Intent();
+					intent.putExtra("novoPagamento", formaPagamento);
+					setResult(RESULT_OK, intent);
+					finish();
+				}
 				else {
 					binding.progressBar.setVisibility(View.GONE);
 					Toast.makeText(this, "Forma de pagamento salva com sucesso.", Toast.LENGTH_SHORT).show();

@@ -5,9 +5,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.diegolima.ecommerce.activity.loja.MainActivityEmpresa;
@@ -52,10 +54,11 @@ public class LoginActivity extends AppCompatActivity {
 		usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
-				if (snapshot.exists()){
-					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
-				}else{
+				if (snapshot.exists()) {
+					setResult(RESULT_OK);
+				} else {
 					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
+
 				}
 				finish();
 			}
@@ -67,12 +70,18 @@ public class LoginActivity extends AppCompatActivity {
 		});
 	}
 
+	private void ocultaTeclado() {
+		InputMethodManager inputMethodManager =
+				(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(binding.edtEmail.getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+
 	private void login(String email, String senha) {
 		FirebaseHelper.getAuth().signInWithEmailAndPassword(email, senha)
 				.addOnCompleteListener(task -> {
 					if (task.isSuccessful()) {
 						recuperaUsuario(task.getResult().getUser().getUid());
-						finish();
 					} else {
 						Toast.makeText(this, FirebaseHelper.validaErros(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
 					}
@@ -87,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		if (!email.isEmpty()) {
 			if (!senha.isEmpty()) {
+				ocultaTeclado();
 				binding.progressBar.setVisibility(View.VISIBLE);
 				login(email, senha);
 			} else {

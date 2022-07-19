@@ -76,7 +76,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/bg_borda_arredondada_laranja"
         android:padding="10dp"
-        android:src="@drawable/ic_carrinho"
+        android:src="@drawable/ic_cartao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 

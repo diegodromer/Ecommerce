@@ -1,5 +1,7 @@
 package com.diegolima.ecommerce.activity.loja;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,7 +64,7 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
 					}
 					binding.textInfo.setText("");
 				}else{
-					binding.textInfo.setText("Nenhuma forma de pagamento criada.");
+					binding.textInfo.setText("Nenhuma forma de pagamento cadastrada.");
 				}
 
 				binding.progressBar.setVisibility(View.GONE);
@@ -127,10 +129,25 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
 				showDialogDelete(formaPagamentoList.get(position));
 			}
 		});
+
+		binding.rvPagamentos.setLeftBg(R.color.color_laranja);
 	}
 
+	private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+			new ActivityResultContracts.StartActivityForResult(),
+			result -> {
+				if (result.getResultCode() == RESULT_OK) {
+					FormaPagamento formaPagamento = (FormaPagamento) result.getData().getParcelableExtra("novoPagamento");
+					formaPagamentoList.add(formaPagamento);
+					lojaPagamentoAdapter.notifyItemInserted(formaPagamentoList.size());
+					binding.textInfo.setText("");
+				}
+			}
+	);
+
+
 	private void configClicks(){
-		binding.include.btnAdd.setOnClickListener(v -> startActivity(new Intent(this, LojaFormPagamentoActivity.class)));
+		binding.include.btnAdd.setOnClickListener(v -> resultLauncher.launch(new Intent(this, LojaFormPagamentoActivity.class)));
 	}
 
 	private void iniciaComponentes(){

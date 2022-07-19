@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Ecommerce"
         tools:targetApi="31">
         <activity
+            android:name=".activity.usuario.UsuarioSelecionaPagamentoActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.loja.LojaFormPagamentoActivity"
             android:exported="false" />
         <activity

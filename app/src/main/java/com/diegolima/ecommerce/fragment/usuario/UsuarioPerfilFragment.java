@@ -36,8 +36,13 @@ public class UsuarioPerfilFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-
 		configClicks();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		configMenu();
 	}
 
 	private void configClicks(){
@@ -47,6 +52,11 @@ public class UsuarioPerfilFragment extends Fragment {
 		});
 		binding.btnEntrar.setOnClickListener(v -> startActivity(LoginActivity.class));
 		binding.btnEnderecos.setOnClickListener(v -> startActivity(UsuarioEnderecoActivity.class));
+		binding.btnDeslogar.setOnClickListener(v -> {
+			FirebaseHelper.getAuth().signOut();
+			requireActivity().finish();
+			startActivity(new Intent(requireContext(), MainActivityUsuario.class));
+		});
 	}
 
 	private void startActivity(Class<?> clazz){
@@ -57,4 +67,13 @@ public class UsuarioPerfilFragment extends Fragment {
 		}
 	}
 
+	private void configMenu(){
+		if (FirebaseHelper.getAutenticado()){
+			binding.llLogado.setVisibility(View.GONE);
+			binding.btnDeslogar.setVisibility(View.VISIBLE);
+		}else{
+			binding.llLogado.setVisibility(View.VISIBLE);
+			binding.btnDeslogar.setVisibility(View.GONE);
+		}
+	}
 }

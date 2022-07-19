@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}else { // Loja
 //					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
-					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
+					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}
 				finish();
 			}
