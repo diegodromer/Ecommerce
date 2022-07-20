@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
+        android:layout_width="0dp"
+        android:layout_height="190dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Pedido: "
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textIdPedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
+                app:layout_constraintTop_toTopOf="@+id/textView14"
+                tools:text="2AS5A6S-A12S5AG1AS" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Status:"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/textStatusPedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Aprovado"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                tools:textColor="@color/color_status_pedido_aprovado" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/textTotalPedido"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                tools:text="Cliente:" />
+
+            <TextView
+                android:id="@+id/textNomeCliente"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintBottom_toTopOf="@+id/textTotalPedido"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                tools:text="Diego Lima de Oliveira" />
+
+
+            <TextView
+                android:id="@+id/textTotalPedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/llButtons"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="R$ 99,99" />
+
+
+            <TextView
+                android:id="@+id/textDataPedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/llButtons"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="26/11/2021 17:30" />
+
+            <LinearLayout
+                android:id="@+id/llButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F7F7F7"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <android.widget.Button
+                    android:id="@+id/btnDetalhesPedido"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#F7F7F7"
+                    android:text="Detalhes"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="8dp"
+                    android:background="?actionBarDivider" />
+
+                <android.widget.Button
+                    android:id="@+id/btnStatusPedido"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#F7F7F7"
+                    android:text="Status"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

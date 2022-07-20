@@ -2,65 +2,97 @@ package com.diegolima.ecommerce.fragment.usuario;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.adapter.UsuarioPedidosAdapter;
+import com.diegolima.ecommerce.databinding.FragmentUsuarioPedidoBinding;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
+import com.diegolima.ecommerce.model.Pedido;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UsuarioPedidoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UsuarioPedidoFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
+public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAdapter.OnClickListener {
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	private FragmentUsuarioPedidoBinding binding;
 
-	public UsuarioPedidoFragment() {
-		// Required empty public constructor
-	}
+	private UsuarioPedidosAdapter usuarioPedidosAdapter;
 
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment UsuarioPedidoFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static UsuarioPedidoFragment newInstance(String param1, String param2) {
-		UsuarioPedidoFragment fragment = new UsuarioPedidoFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
-	}
+	private final List<Pedido> pedidoList = new ArrayList<>();
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_usuario_pedido, container, false);
+
+		binding = FragmentUsuarioPedidoBinding.inflate(inflater, container, false);
+		return binding.getRoot();
+	}
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		configRv();
+		recuperaPedidos();
+	}
+
+	private void recuperaPedidos(){
+		DatabaseReference pedidosRef = FirebaseHelper.getDatabaseReference()
+				.child("usuarioPedidos")
+				.child(FirebaseHelper.getIdFirebase());
+		pedidosRef.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot snapshot) {
+				if (snapshot.exists()){
+					pedidoList.clear();
+					for (DataSnapshot ds : snapshot.getChildren()){
+						Pedido pedido = ds.getValue(Pedido.class);
+						pedidoList.add(pedido);
+					}
+					binding.textInfo.setText("");
+				}else{
+					binding.textInfo.setText("Nenhum pedido encontrado.");
+				}
+				Collections.reverse(pedidoList);
+				binding.progressBar.setVisibility(View.GONE);
+				usuarioPedidosAdapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError error) {
+
+			}
+		});
+	}
+
+	private void configRv(){
+		binding.rvPedidos.setLayoutManager(new LinearLayoutManager(requireContext()));
+		binding.rvPedidos.setHasFixedSize(true);
+		usuarioPedidosAdapter = new UsuarioPedidosAdapter(pedidoList, requireContext(), this);
+		binding.rvPedidos.setAdapter(usuarioPedidosAdapter);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
+
+	@Override
+	public void onClick(Pedido pedido) {
+		Toast.makeText(requireContext(), pedido.getPagamento(), Toast.LENGTH_SHORT).show();
 	}
 }
