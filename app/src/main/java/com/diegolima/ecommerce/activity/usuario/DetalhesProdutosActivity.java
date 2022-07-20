@@ -87,9 +87,16 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 		dialogBinding.btnFechar.setOnClickListener(v -> dialog.dismiss());
 
 		dialogBinding.btnIrCarrinho.setOnClickListener(v -> {
-			addCarrinho();
+
+			Intent intent = new Intent(this, MainActivityUsuario.class);
+			intent.putExtra("id", 2);
+			startActivity(intent);
+			finish();
+
 			dialog.dismiss();
 		});
+
+		addCarrinho();
 
 		builder.setView(dialogBinding.getRoot());
 
@@ -163,10 +170,7 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 		itemPedidoDAO.salvar(itemPedido);
 		itemDAO.salvar(produtoSelecionado);
 
-		Intent intent = new Intent(this, MainActivityUsuario.class);
-		intent.putExtra("id", 2);
-		startActivity(intent);
-		finish();
+
 	}
 
 	private void recuperaFavoritos() {

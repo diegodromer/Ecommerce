@@ -72,6 +72,16 @@ public class ItemPedidoDAO {
 		return true;
 	}
 
+	public void limparCarrinho() {
+		try {
+			write.delete(DBHelper.TABELA_ITEM_PEDIDO, null, null);
+			write.delete(DBHelper.TABELA_ITEM, null, null);
+			Log.i("INFODB:", "Sucesso ao limpar o carrinho");
+		} catch (Exception e) {
+			Log.e("INFODB:", "Erro ao remover o limpar o carrinho: " + e.getMessage());
+		}
+	}
+
 	public Produto getProduto(int idProduto) {
 		Produto produto = null;
 		List<ImagemUpload> uploadList = new ArrayList<>();

@@ -17,6 +17,7 @@ import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Endereco;
 import com.diegolima.ecommerce.model.FormaPagamento;
 import com.diegolima.ecommerce.model.Pedido;
+import com.diegolima.ecommerce.model.StatusPedido;
 import com.diegolima.ecommerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,13 +66,13 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 		binding.btnFinalizar.setOnClickListener(v -> finalizarPedido());
 	}
 
-	private void finalizarPedido(){
+	private void finalizarPedido() {
 		Pedido pedido = new Pedido();
-		pedido.setId(FirebaseHelper.getIdFirebase());
+		pedido.setIdCliente(FirebaseHelper.getIdFirebase());
 		pedido.setEndereco(enderecoList.get(0));
 		pedido.setTotal(itemPedidoDAO.getTotalPedido());
 		pedido.setPagamento(formaPagamento.getNome());
-		pedido.setStatus(1);
+		pedido.setStatusPedido(StatusPedido.PENDENTE);
 
 		if (formaPagamento.getTipoValor().equals("DESC")) {
 			pedido.setDesconto(formaPagamento.getValor());
@@ -80,7 +81,16 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 		}
 
 		pedido.setItemPedidoList(itemPedidoDAO.getList());
+
 		pedido.salvar(true);
+
+		itemPedidoDAO.limparCarrinho();
+
+		Intent intent = new Intent(this, MainActivityUsuario.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		intent.putExtra("id", 1);
+		startActivity(intent);
+
 	}
 
 	private void configDados() {

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.activity.loja.MainActivityEmpresa;
 import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.R;
@@ -25,6 +26,12 @@ public class SplashActivity extends AppCompatActivity {
 
 		new Handler(getMainLooper()).postDelayed(this::verificaAcesso, 500);
 
+		limparCarrinho();
+	}
+
+	private void limparCarrinho() {
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO(this);
+		itemPedidoDAO.limparCarrinho();
 	}
 
 	private void verificaAcesso(){
