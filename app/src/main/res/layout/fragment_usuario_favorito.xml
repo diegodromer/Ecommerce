@@ -39,5 +39,16 @@
             android:layout_marginTop="8dp"
             android:text="Carregando..."
             android:textAlignment="center" />
+
+        <android.widget.Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Fazer login1"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            android:id="@+id/btnLogin"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

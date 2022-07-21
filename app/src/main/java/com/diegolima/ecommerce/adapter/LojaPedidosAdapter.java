@@ -12,9 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Pedido;
 import com.diegolima.ecommerce.model.StatusPedido;
+import com.diegolima.ecommerce.model.Usuario;
 import com.diegolima.ecommerce.util.GetMask;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -33,7 +39,7 @@ public class LojaPedidosAdapter extends RecyclerView.Adapter<LojaPedidosAdapter.
 	@NonNull
 	@Override
 	public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_usuario_pedido_adapter, parent, false);
+		View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loja_pedido_adapter, parent, false);
 		return new MyViewHolder(itemView);
 	}
 
@@ -41,12 +47,15 @@ public class LojaPedidosAdapter extends RecyclerView.Adapter<LojaPedidosAdapter.
 	public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 		Pedido pedido = pedidoList.get(position);
 
+		recuperaCliente(pedido, holder);
+
 		holder.textIdPedido.setText(pedido.getId());
 
 		holder.textTotalPedido.setText(context.getString(R.string.valor, GetMask.getValor(pedido.getTotal())));
 		holder.textDataPedido.setText(GetMask.getDate(pedido.getDataPedido(), 2));
 
-		holder.btnDetalhesPedido.setOnClickListener(v -> clickListener.onClick(pedido));
+		holder.btnDetalhesPedido.setOnClickListener(v -> clickListener.onClick(pedido, "detalhes"));
+		holder.btnStatusPedido.setOnClickListener(v -> clickListener.onClick(pedido, "status"));
 
 		switch (pedido.getStatusPedido()) {
 			case PENDENTE:
@@ -64,19 +73,42 @@ public class LojaPedidosAdapter extends RecyclerView.Adapter<LojaPedidosAdapter.
 
 	}
 
+	private void recuperaCliente(Pedido pedido, MyViewHolder holder) {
+		DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
+				.child("usuarios")
+				.child(pedido.getIdCliente());
+		usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot snapshot) {
+				if (snapshot.exists()) {
+					Usuario usuario = snapshot.getValue(Usuario.class);
+					assert usuario != null;
+					holder.textNomeCliente.setText(usuario.getNome());
+				} else {
+					holder.textNomeCliente.setText("Usuário não encontrado.");
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError error) {
+
+			}
+		});
+	}
+
 	@Override
 	public int getItemCount() {
 		return pedidoList.size();
 	}
 
 	public interface OnClickListener {
-		void onClick(Pedido pedido);
+		void onClick(Pedido pedido, String operacao);
 	}
 
 	static class MyViewHolder extends RecyclerView.ViewHolder {
 
-		TextView textIdPedido, textStatusPedido, textTotalPedido, textDataPedido;
-		Button btnDetalhesPedido;
+		TextView textIdPedido, textStatusPedido, textTotalPedido, textDataPedido, textNomeCliente;
+		Button btnDetalhesPedido, btnStatusPedido;
 
 		public MyViewHolder(@NonNull View itemView) {
 			super(itemView);
@@ -84,7 +116,9 @@ public class LojaPedidosAdapter extends RecyclerView.Adapter<LojaPedidosAdapter.
 			textStatusPedido = itemView.findViewById(R.id.textStatusPedido);
 			textTotalPedido = itemView.findViewById(R.id.textTotalPedido);
 			textDataPedido = itemView.findViewById(R.id.textDataPedido);
+			textNomeCliente = itemView.findViewById(R.id.textNomeCliente);
 			btnDetalhesPedido = itemView.findViewById(R.id.btnDetalhesPedido);
+			btnStatusPedido = itemView.findViewById(R.id.btnStatusPedido);
 		}
 	}
 

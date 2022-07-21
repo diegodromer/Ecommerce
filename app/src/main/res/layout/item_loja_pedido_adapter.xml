@@ -17,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -64,32 +63,27 @@
                 tools:textColor="@color/color_status_pedido_aprovado" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:ellipsize="end"
-                android:maxLines="1"
+                android:layout_margin="16dp"
+                android:text="Cliente: "
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/textTotalPedido"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15"
-                tools:text="Cliente:" />
+                app:layout_constraintTop_toBottomOf="@+id/textStatusPedido" />
 
             <TextView
                 android:id="@+id/textNomeCliente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                app:layout_constraintBottom_toTopOf="@+id/textTotalPedido"
+                app:layout_constraintBottom_toBottomOf="@+id/textView17"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView16"
-                app:layout_constraintTop_toBottomOf="@+id/textView15"
-                tools:text="Diego Lima de Oliveira" />
-
+                app:layout_constraintStart_toEndOf="@+id/textView17"
+                app:layout_constraintTop_toTopOf="@+id/textView17"
+                tools:text="Diego" />
 
             <TextView
                 android:id="@+id/textTotalPedido"
@@ -100,7 +94,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/llButtons"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="R$ 99,99" />
-
 
             <TextView
                 android:id="@+id/textDataPedido"
@@ -116,37 +109,47 @@
                 android:id="@+id/llButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F7F7F7"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:background="#F7F7F7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <android.widget.Button
                     android:id="@+id/btnDetalhesPedido"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_weight="1"
                     android:background="#F7F7F7"
                     android:text="Detalhes"
                     android:textAllCaps="false"
-                    android:textColor="@color/black" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="8dp"
-                    android:background="?actionBarDivider" />
+                    android:background="?actionBarDivider"/>
 
                 <android.widget.Button
                     android:id="@+id/btnStatusPedido"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#F7F7F7"
+                    style="?android:attr/borderlessButtonStyle"
                     android:text="Status"
                     android:textAllCaps="false"
-                    android:textColor="@color/black" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

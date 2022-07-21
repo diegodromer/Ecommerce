@@ -1,5 +1,6 @@
 package com.diegolima.ecommerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
+import com.diegolima.ecommerce.autenticacao.LoginActivity;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioFavoritoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Favorito;
@@ -28,7 +30,7 @@ import java.util.List;
 
 public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdapter.OnClickListener, LojaProdutoAdapter.OnClickFavorito {
 
-	FragmentUsuarioFavoritoBinding binding;
+	private FragmentUsuarioFavoritoBinding binding;
 
 	private DatabaseReference favoritoRef;
 	private ValueEventListener eventListener;
@@ -49,12 +51,29 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		configRvProdutos();
-		recuperaFavoritos();
+		configClicks();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (FirebaseHelper.getAutenticado()) {
+			configRvProdutos();
+			recuperaFavoritos();
+			binding.btnLogin.setVisibility(View.GONE);
+		} else {
+			binding.btnLogin.setVisibility(View.VISIBLE);
+			binding.progressBar.setVisibility(View.GONE);
+			binding.textInfo.setText("Você não está autenticado no app.");
+		}
+	}
+
+	private void configClicks() {
+		binding.btnLogin.setOnClickListener(v -> startActivity(new Intent(requireContext(), LoginActivity.class)));
 	}
 
 	private void recuperaFavoritos() {
-		if (FirebaseHelper.getAutenticado()){
+		if (FirebaseHelper.getAutenticado()) {
 			favoritoRef = FirebaseHelper.getDatabaseReference()
 					.child("favoritos")
 					.child(FirebaseHelper.getIdFirebase());
@@ -62,7 +81,7 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 				@Override
 				public void onDataChange(@NonNull DataSnapshot snapshot) {
 					idsFavoritos.clear();
-					for (DataSnapshot ds : snapshot.getChildren()){
+					for (DataSnapshot ds : snapshot.getChildren()) {
 						String idFavorito = ds.getValue(String.class);
 						idsFavoritos.add(idFavorito);
 					}
@@ -81,7 +100,7 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 	private void configRvProdutos() {
 		binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 		binding.rvProdutos.setHasFixedSize(true);
-		lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_adapter, produtoList, requireContext(), true,idsFavoritos, this, this);
+		lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_adapter, produtoList, requireContext(), true, idsFavoritos, this, this);
 		binding.rvProdutos.setAdapter(lojaProdutoAdapter);
 	}
 
@@ -96,7 +115,7 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 				public void onDataChange(@NonNull DataSnapshot snapshot) {
 					Produto produto = snapshot.getValue(Produto.class);
 					produtoList.add(produto);
-					if (produtoList.size() == idsFavoritos.size()){
+					if (produtoList.size() == idsFavoritos.size()) {
 						binding.progressBar.setVisibility(View.GONE);
 						lojaProdutoAdapter.notifyDataSetChanged();
 					}
@@ -123,7 +142,7 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		favoritoRef.removeEventListener(eventListener);
+		if (eventListener != null) favoritoRef.removeEventListener(eventListener);
 		binding = null;
 	}
 
@@ -134,10 +153,10 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
 
 	@Override
 	public void OnClickFavorito(Produto produto) {
-		if (!idsFavoritos.contains(produto.getId())){
+		if (!idsFavoritos.contains(produto.getId())) {
 			idsFavoritos.add(produto.getId());
 			produtoList.add(produto);
-		}else {
+		} else {
 			idsFavoritos.remove(produto.getId());
 			produtoList.remove(produto);
 		}

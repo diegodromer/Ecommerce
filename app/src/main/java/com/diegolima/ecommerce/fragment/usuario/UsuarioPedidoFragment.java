@@ -1,19 +1,19 @@
 package com.diegolima.ecommerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.UsuarioPedidosAdapter;
+import com.diegolima.ecommerce.autenticacao.LoginActivity;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioPedidoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Pedido;
@@ -37,7 +37,6 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-
 		binding = FragmentUsuarioPedidoBinding.inflate(inflater, container, false);
 		return binding.getRoot();
 	}
@@ -45,8 +44,7 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		configRv();
-		recuperaPedidos();
+		configClicks();
 	}
 
 	private void recuperaPedidos(){
@@ -89,6 +87,24 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
 	public void onDestroyView() {
 		super.onDestroyView();
 		binding = null;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (FirebaseHelper.getAutenticado()) {
+			configRv();
+			recuperaPedidos();
+			binding.btnLogin.setVisibility(View.GONE);
+		} else {
+			binding.btnLogin.setVisibility(View.VISIBLE);
+			binding.progressBar.setVisibility(View.GONE);
+			binding.textInfo.setText("Você não está autenticado no app.");
+		}
+	}
+
+	private void configClicks() {
+		binding.btnLogin.setOnClickListener(v -> startActivity(new Intent(requireContext(), LoginActivity.class)));
 	}
 
 	@Override

@@ -52,15 +52,19 @@
                     android:layout_height="wrap_content"
                     android:text="CEP" />
 
-                <EditText
+
+                <com.santalu.maskara.widget.MaskEditText
                     android:id="@+id/edtCEP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_edit_off"
-                    android:hint="19360-000"
                     android:inputType="number"
-                    android:padding="16dp" />
+                    android:background="@drawable/bg_edit_off"
+                    android:hint="19200-000"
+                    android:padding="16dp"
+                    app:mask="_____-___"
+                    app:maskCharacter="_"
+                    app:maskStyle="completable" />
             </LinearLayout>
 
             <LinearLayout
@@ -184,12 +188,12 @@
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
+            android:indeterminateTint="@color/color_laranja"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/color_laranja" />
+            tools:visibility="visible" />
     </LinearLayout>
 
     <android.widget.Button

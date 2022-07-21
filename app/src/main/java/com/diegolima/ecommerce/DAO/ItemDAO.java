@@ -19,8 +19,9 @@ public class ItemDAO {
 		read = dbHelper.getReadableDatabase();
 	}
 
-	public long salvar(Produto produto){
+	public long salvar(Produto produto) {
 		long idRetorno = 0;
+
 		ContentValues values = new ContentValues();
 		values.put("id_firebase", produto.getId());
 		values.put("nome", produto.getTitulo());
@@ -35,24 +36,24 @@ public class ItemDAO {
 		try {
 			idRetorno = write.insert(DBHelper.TABELA_ITEM, null, values);
 		}catch (Exception e){
-			Log.e("INFODB", "Erro ao salvar o item: " + e.getMessage());
+			Log.i("INFODB:", " Erro ao salvar o item. " + e.getMessage());
 		}
 
 		return idRetorno;
 	}
 
 	public boolean remover(ItemPedido itemPedido) {
-
 		String where = "id=?";
 		String[] args = {String.valueOf(itemPedido.getId())};
 
 		try {
 			write.delete(DBHelper.TABELA_ITEM, where, args);
-			Log.i("INFODB:", "Sucesso ao remover o itemPedido");
+			Log.i("INFODB:", " Sucesso ao remover o itemPedido. ");
 		} catch (Exception e) {
-			Log.e("INFODB:", "Erro ao remover o itemPedido: " + e.getMessage());
+			Log.i("INFODB:", " Erro ao remover o itemPedido. " + e.getMessage());
 			return false;
 		}
 		return true;
 	}
+
 }

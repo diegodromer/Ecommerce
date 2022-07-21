@@ -23,10 +23,10 @@ public class SplashActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-
 		new Handler(getMainLooper()).postDelayed(this::verificaAcesso, 500);
 
 		limparCarrinho();
+
 	}
 
 	private void limparCarrinho() {
@@ -34,10 +34,10 @@ public class SplashActivity extends AppCompatActivity {
 		itemPedidoDAO.limparCarrinho();
 	}
 
-	private void verificaAcesso(){
-		if(FirebaseHelper.getAutenticado()){
+	private void verificaAcesso() {
+		if (FirebaseHelper.getAutenticado()) {
 			recuperaAcesso();
-		}else {
+		} else {
 			finish();
 			startActivity(new Intent(this, MainActivityUsuario.class));
 		}
@@ -50,9 +50,9 @@ public class SplashActivity extends AppCompatActivity {
 		usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
-				if(snapshot.exists()){ // Usuário
+				if (snapshot.exists()) { // Usuário
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
-				}else { // Loja
+				} else { // Loja
 //					startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
 					startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
 				}

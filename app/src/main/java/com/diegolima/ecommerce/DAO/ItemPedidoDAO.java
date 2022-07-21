@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemPedidoDAO {
+
 	private final SQLiteDatabase write;
 	private final SQLiteDatabase read;
 
@@ -24,7 +25,6 @@ public class ItemPedidoDAO {
 	}
 
 	public boolean salvar(ItemPedido itemPedido) {
-
 		ContentValues values = new ContentValues();
 		values.put("id_produto", itemPedido.getIdProduto());
 		values.put("valor", itemPedido.getValor());
@@ -33,14 +33,13 @@ public class ItemPedidoDAO {
 		try {
 			write.insert(DBHelper.TABELA_ITEM_PEDIDO, null, values);
 		} catch (Exception e) {
-			Log.e("INFODB:", " Erro ao salvar o itemPedido: " + e.getMessage());
+			Log.i("INFODB:", " Erro ao salvar o itemPedido. " + e.getMessage());
 			return false;
 		}
 		return true;
 	}
 
 	public boolean atualizar(ItemPedido itemPedido) {
-
 		ContentValues values = new ContentValues();
 		values.put("quantidade", itemPedido.getQuantidade());
 
@@ -49,37 +48,26 @@ public class ItemPedidoDAO {
 
 		try {
 			write.update(DBHelper.TABELA_ITEM_PEDIDO, values, where, args);
-			Log.i("INFODB:", "Sucesso ao atualizar o itemPedido");
+			Log.i("INFODB:", " Sucesso ao atualizar o itemPedido. ");
 		} catch (Exception e) {
-			Log.e("INFODB:", "Erro ao atualizar o itemPedido: " + e.getMessage());
+			Log.i("INFODB:", " Erro ao atualizar o itemPedido. " + e.getMessage());
 			return false;
 		}
 		return true;
 	}
 
 	public boolean remover(ItemPedido itemPedido) {
-
 		String where = "id=?";
 		String[] args = {String.valueOf(itemPedido.getId())};
 
 		try {
 			write.delete(DBHelper.TABELA_ITEM_PEDIDO, where, args);
-			Log.i("INFODB:", "Sucesso ao remover o itemPedido");
+			Log.i("INFODB:", " Sucesso ao remover o itemPedido. ");
 		} catch (Exception e) {
-			Log.e("INFODB:", "Erro ao remover o itemPedido: " + e.getMessage());
+			Log.i("INFODB:", " Erro ao remover o itemPedido. " + e.getMessage());
 			return false;
 		}
 		return true;
-	}
-
-	public void limparCarrinho() {
-		try {
-			write.delete(DBHelper.TABELA_ITEM_PEDIDO, null, null);
-			write.delete(DBHelper.TABELA_ITEM, null, null);
-			Log.i("INFODB:", "Sucesso ao limpar o carrinho");
-		} catch (Exception e) {
-			Log.e("INFODB:", "Erro ao remover o limpar o carrinho: " + e.getMessage());
-		}
 	}
 
 	public Produto getProduto(int idProduto) {
@@ -144,4 +132,15 @@ public class ItemPedidoDAO {
 		}
 		return total;
 	}
+
+	public void limparCarrinho() {
+		try {
+			write.delete(DBHelper.TABELA_ITEM_PEDIDO, null, null);
+			write.delete(DBHelper.TABELA_ITEM, null, null);
+			Log.i("INFODB:", " Sucesso ao limpar o carrinho. ");
+		} catch (Exception e) {
+			Log.i("INFODB:", " Erro ao limpar o carrinho. " + e.getMessage());
+		}
+	}
+
 }
