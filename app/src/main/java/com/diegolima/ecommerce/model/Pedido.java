@@ -29,7 +29,7 @@ public class Pedido implements Serializable {
 	public void salvar(boolean novoPedido){
 		DatabaseReference usuarioPedidoRef = FirebaseHelper.getDatabaseReference()
 				.child("usuarioPedidos")
-				.child(FirebaseHelper.getIdFirebase())
+				.child(this.getIdCliente())
 				.child(this.getId());
 		usuarioPedidoRef.setValue(this);
 
@@ -40,14 +40,31 @@ public class Pedido implements Serializable {
 
 		if (novoPedido){
 			DatabaseReference dataPedidoUsuarioRef = usuarioPedidoRef
-					.child("dataPedido");
+					.child("dataStatusPedido");
 			dataPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
 
 			DatabaseReference dataPedidoLojaRef = lojaPedidoRef
-					.child("dataPedido");
+					.child("dataStatusPedido");
 			dataPedidoLojaRef.setValue(ServerValue.TIMESTAMP);
-		}else{
 
+
+
+
+			DatabaseReference dataStatusPedidoUsuarioRef = usuarioPedidoRef
+					.child("dataPedido");
+			dataStatusPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
+
+			DatabaseReference dataStatusPedidoLojaRef = lojaPedidoRef
+					.child("dataPedido");
+			dataStatusPedidoLojaRef.setValue(ServerValue.TIMESTAMP);
+		}else{
+			DatabaseReference dataStatusPedidoUsuarioRef = usuarioPedidoRef
+					.child("dataPedido");
+			dataStatusPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
+
+			DatabaseReference dataStatusPedidoLojaRef = lojaPedidoRef
+					.child("dataPedido");
+			dataStatusPedidoLojaRef.setValue(ServerValue.TIMESTAMP);
 		}
 	}
 

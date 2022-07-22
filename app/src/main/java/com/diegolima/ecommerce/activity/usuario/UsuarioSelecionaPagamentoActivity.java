@@ -47,13 +47,9 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
 	private void configClicks(){
 		binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 		binding.btnContinuar.setOnClickListener(v -> {
-			if (formaPagamento != null){
-				Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
-				intent.putExtra("pagamentoSelecionado", formaPagamento);
-				startActivity(intent);
-			}else{
-				Toast.makeText(this, "Selecione a forma de pagamento.", Toast.LENGTH_SHORT).show();
-			}
+			Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
+			intent.putExtra("pagamentoSelecionado", formaPagamento);
+			startActivity(intent);
 		});
 	}
 
@@ -84,6 +80,7 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
 			}
 		});
 	}
+
 	private void configRv(){
 		binding.rvPagamentos.setLayoutManager(new LinearLayoutManager(this));
 		binding.rvPagamentos.setHasFixedSize(true);

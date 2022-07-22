@@ -108,17 +108,31 @@ public class LojaConfigActivity extends AppCompatActivity {
 		if (loja.getUrlLogo() != null){
 			Picasso.get().load(loja.getUrlLogo()).into(binding.imgLogo);
 		}
+
 		if (loja.getNome() != null){
 			binding.edtLoja.setText(loja.getNome());
 		}
+
 		if (loja.getCNPJ() != null){
 			binding.edtCNPJ.setText(loja.getCNPJ());
 		}
+
 		if (loja.getPedidoMinimo() != 0){
 			binding.edtPedidoMinimo.setText(String.valueOf(loja.getPedidoMinimo() * 10));
 		}
+
 		if (loja.getFreteGratis() != 0){
 			binding.edtFrete.setText(String.valueOf(loja.getFreteGratis() * 10));
+		}
+
+		if (loja.getPublicKey() != null){
+			binding.edtPublicKey.setText(loja.getPublicKey());
+		}
+		if (loja.getAccessToken() != null){
+			binding.edtAcessToken.setText(loja.getAccessToken());
+		}
+		if (loja.getParcelas() != 0){
+			binding.edtParcelas.setText(String.valueOf(loja.getParcelas()));
 		}
 	}
 
@@ -127,24 +141,52 @@ public class LojaConfigActivity extends AppCompatActivity {
 		String cnpj = binding.edtCNPJ.getMasked();
 		double pedidoMinimo = (double) binding.edtPedidoMinimo.getRawValue() / 100;
 		double freteGratis = (double) binding.edtFrete.getRawValue() / 100;
+		String publicKey = binding.edtPublicKey.getText().toString().trim();
+		String acessToken = binding.edtAcessToken.getText().toString().trim();
+
+		String parcelasStr = binding.edtParcelas.getText().toString().trim();
+		int parcelas = 0;
+		if (!parcelasStr.isEmpty()) {
+			parcelas = Integer.parseInt(binding.edtParcelas.getText().toString().trim());
+		}
 
 		if (!nomeLoja.isEmpty()){
 			if (!cnpj.isEmpty()){
 				if (cnpj.length() == 18){
-					loja.setNome(nomeLoja);
-					loja.setCNPJ(cnpj);
-					loja.setPedidoMinimo(pedidoMinimo);
-					loja.setFreteGratis(freteGratis);
+					if (!publicKey.isEmpty()){
+						if (!acessToken.isEmpty()){
+							if (parcelas > 0 && parcelas <= 12){
+								ocultaTeclado();
 
-					if (caminhoImagem != null){
-						salvarImagemFirebase();
-					}else if (loja.getUrlLogo() != null){
-						loja.salvar();
+								loja.setNome(nomeLoja);
+								loja.setCNPJ(cnpj);
+								loja.setPedidoMinimo(pedidoMinimo);
+								loja.setFreteGratis(freteGratis);
+								loja.setPublicKey(publicKey);
+								loja.setAccessToken(acessToken);
+								loja.setParcelas(parcelas);
+
+								if (caminhoImagem != null){
+									salvarImagemFirebase();
+								}else if (loja.getUrlLogo() != null){
+									loja.salvar();
+								}else{
+									ocultaTeclado();
+									Toast.makeText(this, "Escolha uma logo para sua loja", Toast.LENGTH_SHORT).show();
+								}
+
+							}else{
+								binding.edtPublicKey.setError("Mínimo 1 e máximo 12.");
+								binding.edtPublicKey.requestFocus();
+							}
+						}else{
+							binding.edtAcessToken.setError("Informe seu acess token.");
+							binding.edtAcessToken.requestFocus();
+						}
 					}else{
-						ocultaTeclado();
-						Toast.makeText(this, "Escolha uma logo para sua loja", Toast.LENGTH_SHORT).show();
+						binding.edtPublicKey.setError("Informe sua public key.");
+						binding.edtPublicKey.requestFocus();
 					}
-
 				}else{
 					binding.edtLoja.setError("CNPJ inválido");
 					binding.edtLoja.requestFocus();

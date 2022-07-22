@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,6 +84,7 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
 				formaPagamento.setDescricao(descricao);
 				formaPagamento.setValor(valor);
 				formaPagamento.setTipoValor(tipoValor);
+				formaPagamento.setCredito(binding.cbCredito.isChecked());
 				if (formaPagamento.getTipoValor() != null) {
 					formaPagamento.salvar();
 				} else {

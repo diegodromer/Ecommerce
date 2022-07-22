@@ -11,11 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.activity.loja.LojaConfigActivity;
 import com.diegolima.ecommerce.activity.loja.LojaPagamentosActivity;
-import com.diegolima.ecommerce.activity.loja.LojaRecebimentosActivity;
-import com.diegolima.ecommerce.activity.loja.MainActivityEmpresa;
 import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.databinding.FragmentLojaConfigBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;

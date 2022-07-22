@@ -1,5 +1,7 @@
 package com.diegolima.ecommerce.model;
 
+import android.widget.CheckBox;
+
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 
@@ -12,6 +14,7 @@ public class FormaPagamento implements Serializable {
 	private String descricao;
 	private double valor;
 	private String tipoValor; // "DESC" ou "ACRES"
+	private boolean credito = false;
 
 	public FormaPagamento() {
 		DatabaseReference pagamentoRef = FirebaseHelper.getDatabaseReference();
@@ -70,5 +73,13 @@ public class FormaPagamento implements Serializable {
 
 	public void setTipoValor(String tipoValor) {
 		this.tipoValor = tipoValor;
+	}
+
+	public boolean isCredito() {
+		return credito;
+	}
+
+	public void setCredito(boolean credito) {
+		this.credito = credito;
 	}
 }

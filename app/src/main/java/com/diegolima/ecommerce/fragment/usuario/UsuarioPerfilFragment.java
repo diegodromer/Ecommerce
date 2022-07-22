@@ -11,14 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.diegolima.ecommerce.activity.loja.LojaConfigActivity;
-import com.diegolima.ecommerce.activity.loja.LojaRecebimentosActivity;
 import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.activity.usuario.UsuarioEnderecoActivity;
 import com.diegolima.ecommerce.activity.usuario.UsuarioPerfilActivity;
 import com.diegolima.ecommerce.autenticacao.CadastroActivity;
 import com.diegolima.ecommerce.autenticacao.LoginActivity;
-import com.diegolima.ecommerce.databinding.FragmentUsuarioPedidoBinding;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioPerfilBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 

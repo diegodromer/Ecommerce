@@ -71,6 +71,14 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 		configRvProdutos();
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (dialog != null) {
+			dialog.dismiss();
+		}
+	}
+
 	private void configRvProdutos() {
 		binding.rvProdutos.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
 		binding.rvProdutos.setHasFixedSize(true);
@@ -92,8 +100,6 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 			intent.putExtra("id", 2);
 			startActivity(intent);
 			finish();
-
-			dialog.dismiss();
 		});
 
 		addCarrinho();
