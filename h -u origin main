@@ -1,0 +1,248 @@
+[33mcommit b73903bfba6d1fd458566a59d519882c7b0e0670[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jul 22 00:16:14 2022 -0300
+
+    pesquisas por produtos da home implementada.
+
+[33mcommit 66e800d36e35c4c2a0c4bb7094203802736d9be7[m[33m ([m[1;32mmain[m[33m)[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jul 22 00:06:35 2022 -0300
+
+    pesquisas
+
+[33mcommit 548b3e145fb34cdf97379ebcef11282073812771[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jul 22 00:03:00 2022 -0300
+
+    pesquisas por produtos da home implementada.
+
+[33mcommit 5596bf631b75903e296da88682c7ddcde17352af[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jul 21 21:57:13 2022 -0300
+
+    detalhes do pedido implementado.
+
+[33mcommit 43713d12c167d0744d781cb89017b5ff75510689[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jul 20 21:54:31 2022 -0300
+
+    Mascara de cep e requisicao de api para cep implementada.
+
+[33mcommit e9d7c2fa92ed0b5edc1a2878f15dadee1837c3bc[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jul 20 00:35:59 2022 -0300
+
+    botão de pedido do menu de navegação já listando todos pedidos do usuário.
+
+[33mcommit ea5c3242765d31a5552f3ff84b5e9ef338cf2fea[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 19 23:21:38 2022 -0300
+
+    pedido ja sendo finalizado e salvo no firebase.
+
+[33mcommit f7a31c11441adb5c04d23bb4a4e1a1985f9988a3[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 19 18:58:35 2022 -0300
+
+    layout e funcionamento do fragment de perfil com alteracões realizadas
+
+[33mcommit a1b603c522dca69364c0a6a4a051cb7251195814[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jul 18 02:08:06 2022 -0300
+
+    formas de pagamento cadastro e remocao e listacao, implementadas.
+
+[33mcommit 2906e12c83f7fb07c7b78f6d18f0f64d02fccb54[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Sun Jul 17 23:36:34 2022 -0300
+
+    enderecos ja sendo trocados na tela de resumo do pedido. E sessão de tipo de pagamento já implementada a parte visual.
+
+[33mcommit a1a7f098a98f9236c056101864a204ec65e22c06[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jul 14 23:54:25 2022 -0300
+
+    remoção de endereços e edição de endereços implementada.
+
+[33mcommit 5d3cf2e4cfd7c6ff842f8fe34b6e746bc757542f[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 12 23:48:13 2022 -0300
+
+    Sessão de Perfil do bottomNavigation do usuario implementada.
+
+[33mcommit 2e9615c7f9ae4d22b3d8fec0d6c92840ed0804c6[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 12 22:21:14 2022 -0300
+
+    tela de detalhes do pedido com a função de continuar comprando ou ir para carrinho implementada.
+
+[33mcommit ab075ba7c87f88f156e1303aa2597cd41ee5398a[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jul 11 23:55:09 2022 -0300
+
+    botão de favoritar o item no dialog no carrinho implementada.
+
+[33mcommit fb69d9f6dc021da6cdb7c5edd16a2f1a115de175[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Sun Jul 10 21:20:56 2022 -0300
+
+    quantidade de produtos e valor individual e total do carrinho implementado.
+
+[33mcommit d451c5a44dd3e414275d1101a9867365eb1f19bc[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jul 8 23:29:25 2022 -0300
+
+    implementação do carregamento dos itens no carrinho realizada.
+
+[33mcommit bed8224f85bacd36e4969348633dbba476be4af2[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jul 8 00:57:47 2022 -0300
+
+    Layout de adapter do carrinho implementado
+
+[33mcommit 4b239b02d43f2354cdc5281b87d6b96e569485f0[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jul 7 00:58:54 2022 -0300
+
+    alguns ajustes no layout de detalhes feitos.
+
+[33mcommit 46e806b1c5d9fb6cd45501805d68b44ddc312dac[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jul 7 00:24:12 2022 -0300
+
+    classes do banco de dados implementadas
+
+[33mcommit acf95b4b40fe452ad29aa91d520f8e6fa43b471f[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jul 6 20:14:23 2022 -0300
+
+    tela de detalhes do produto implementada, faltando apenas a ação do botão de comprar.
+
+[33mcommit 906cda9049669774e6901d2cbf6e2ce62d033b53[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jul 6 01:43:15 2022 -0300
+
+    activity de detalhes do produto já implementada e já carregando as imagens em estilo carrossel.
+
+[33mcommit a12322286dae88d6e1e0dfbf4d3b851b57e84c76[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 5 22:59:59 2022 -0300
+
+    função de favoritar produtos já implentada e, salvando e removendo do Firebasem os itens favoritados.
+
+[33mcommit 330d5d1b025513342a610ded072311e3bd5316d7[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jul 5 21:58:08 2022 -0300
+
+    carregamento dos produtos da home implementado, juntamente com a animação dos clique das categorias.
+
+[33mcommit 6cf31f147e6e62c086b54e5fff4e1b57e60855be[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jul 4 20:55:45 2022 -0300
+
+    activity de informações da loja implementada.
+
+[33mcommit e58d6dd86ca36a4c69df4b29c9d0246cbcd9570e[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 30 20:15:16 2022 -0300
+
+    metodos de mascara e string de formatacao de porcentagem dos valores de preco antigo a relacao aos novos implementados.
+
+[33mcommit 963a9ad97f9a9c9e0de7ffdd7824287673b13cb1[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 30 19:55:54 2022 -0300
+
+    ajustes da tela de cadastro de produtos realizados.
+
+[33mcommit e2d24aadc15281fdf5cff585cf5c21bd9de1347a[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 30 02:12:32 2022 -0300
+
+    tela de edição ja carregando todos os itens do produto selecionado.
+
+[33mcommit fae61b7124f5b015f530ed5b8f6cb8376069ac79[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jun 29 21:49:30 2022 -0300
+
+    todos Produtos já sendo carregados na aba de produtos
+
+[33mcommit 85dee53ac93b0a48fe1ecea32fdb6c8157ce4f13[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Tue Jun 28 22:06:44 2022 -0300
+
+    Tela de seleção de categorias da tela de adicionar produtos já sendo recuperada e exibida.
+
+[33mcommit 400f354e06a7fc9e7e9e7dbf024649d217bf1f44[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jun 27 08:59:26 2022 -0300
+
+    imagens da galeria e da câmera da tela de formulário de produtos já sendo carregadas nas views respectivas
+
+[33mcommit 643382eb0f0c145a1564f942041db81c7aecb984[m
+Merge: 46e3400 e7daf50
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jun 24 00:47:24 2022 -0300
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit 46e340002933911d883cd7432d3e29ae8c2ff7dc[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Fri Jun 24 00:47:13 2022 -0300
+
+    inserção e remoção de itens do catálogo implementada e já atualizando no Firebase.
+
+[33mcommit e7daf503e7bf7398241c5dfa5330040aa2d10eb3[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 23 19:59:31 2022 -0300
+
+    Update README.md
+    
+    Descrição do app sendo adicionado ao andar do desenvolvimento do App.
+
+[33mcommit ea1abbea3c1e51bbfc0c4f55711ba8c567b91829[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 23 19:58:03 2022 -0300
+
+    Update README.md
+
+[33mcommit 0c5cf1c15ce013e7faae7d2c032e77ff4cb594e9[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 23 19:57:44 2022 -0300
+
+    Update README.md
+
+[33mcommit ce4b63a3703ed62669f3a55b259b21c5a5698c91[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 23 19:37:48 2022 -0300
+
+    AlertDialog da tela de cadastro de produtos pronta e com ação de clique de add, já implementado para a abertura da tela.
+
+[33mcommit dd2a90f528b064cbdd4fc1417c3782b7ddbe734d[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Thu Jun 23 01:10:25 2022 -0300
+
+    fragments e Navegação da modalidade loja, implementada.
+
+[33mcommit cd78fa2b667f76207e435938fdd1b75cb1b988b0[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jun 22 20:13:34 2022 -0300
+
+    fragment e navegação do app do usuário, implementadas.
+
+[33mcommit 19d2d6c60194176f0bd2751c7035993e7f3a410e[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Wed Jun 22 00:45:20 2022 -0300
+
+    funções de login, recuperacao de conta, e cadastro de usuario implementados.
+
+[33mcommit 3156eb1354c1656f8b2e6d97a9d61aa9efc1c551[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jun 20 20:52:07 2022 -0300
+
+    Criação do projeto.
+
+[33mcommit 11f4891b9667663022691bfee5ab066784c8ca21[m
+Author: Diego Lima de Oliveira <diego.dromer@hotmail.com>
+Date:   Mon Jun 20 20:46:05 2022 -0300
+
+    Initial commit
