@@ -10,6 +10,7 @@ public class Usuario {
 	private String id;
 	private String nome;
 	private String email;
+	private String telefone;
 	private String senha;
 
 	public Usuario() {
@@ -17,8 +18,17 @@ public class Usuario {
 
 	public void salvar(){
 		DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
-						.child("usuarios");
+				.child("usuarios")
+				.child(this.getId());
 		usuarioRef.setValue(this);
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public String getId() {

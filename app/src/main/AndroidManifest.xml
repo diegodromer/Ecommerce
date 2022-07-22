@@ -21,7 +21,10 @@
         android:theme="@style/Theme.Ecommerce"
         tools:targetApi="31">
         <activity
-            android:name=".UsuarioPerfilActivity"
+            android:name=".activity.app.DetalhesPedidoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.usuario.UsuarioPerfilActivity"
             android:exported="false" />
         <activity
             android:name=".activity.usuario.UsuarioSelecionaPagamentoActivity"
@@ -75,7 +78,7 @@
             android:name=".activity.usuario.MainActivityUsuario"
             android:exported="false" />
         <activity
-            android:name=".app.SplashActivity"
+            android:name=".activity.app.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splash">
             <intent-filter>

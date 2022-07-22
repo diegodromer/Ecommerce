@@ -15,6 +15,7 @@ import com.diegolima.ecommerce.activity.loja.LojaConfigActivity;
 import com.diegolima.ecommerce.activity.loja.LojaRecebimentosActivity;
 import com.diegolima.ecommerce.activity.usuario.MainActivityUsuario;
 import com.diegolima.ecommerce.activity.usuario.UsuarioEnderecoActivity;
+import com.diegolima.ecommerce.activity.usuario.UsuarioPerfilActivity;
 import com.diegolima.ecommerce.autenticacao.CadastroActivity;
 import com.diegolima.ecommerce.autenticacao.LoginActivity;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioPedidoBinding;
@@ -46,7 +47,7 @@ public class UsuarioPerfilFragment extends Fragment {
 	}
 
 	private void configClicks(){
-		binding.btnMeusDados.setOnClickListener(v -> startActivity(LoginActivity.class));
+		binding.btnMeusDados.setOnClickListener(v -> startActivity(UsuarioPerfilActivity.class));
 		binding.btnCadastrar.setOnClickListener(v -> {
 			startActivity(new Intent(requireContext(), CadastroActivity.class));
 		});

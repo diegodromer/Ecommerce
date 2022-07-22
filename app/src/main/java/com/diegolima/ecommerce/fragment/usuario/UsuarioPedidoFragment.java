@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.diegolima.ecommerce.activity.app.DetalhesPedidoActivity;
 import com.diegolima.ecommerce.adapter.UsuarioPedidosAdapter;
 import com.diegolima.ecommerce.autenticacao.LoginActivity;
 import com.diegolima.ecommerce.databinding.FragmentUsuarioPedidoBinding;
@@ -109,6 +110,8 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
 
 	@Override
 	public void onClick(Pedido pedido) {
-		Toast.makeText(requireContext(), pedido.getPagamento(), Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(requireContext(), DetalhesPedidoActivity.class);
+		intent.putExtra("pedidoSelecionado", pedido);
+		startActivity(intent);
 	}
 }
