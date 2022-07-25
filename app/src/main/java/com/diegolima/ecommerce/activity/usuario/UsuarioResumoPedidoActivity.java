@@ -48,27 +48,33 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 		itemPedidoDAO = new ItemPedidoDAO(this);
 		itemDAO = new ItemDAO(this);
 
-		recuperaEnderecos();
-		configClick();
+		recuperaEndereco();
+
+		configClicks();
+
 		getExtra();
+
 	}
 
-	private void getExtra(){
+	private void getExtra() {
 		formaPagamento = (FormaPagamento) getIntent().getExtras().getSerializable("pagamentoSelecionado");
 		configDados();
 	}
 
-	private void configClick(){
+	private void configClicks() {
 		binding.btnAlterarEndereco.setOnClickListener(v -> {
 			resultLauncher.launch(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
 		});
+
 		binding.btnAlterarPagamento.setOnClickListener(v -> finish());
+
 		binding.btnFinalizar.setOnClickListener(v -> {
-			if (this.formaPagamento.isCredito()){
+			if (this.formaPagamento.isCredito()) {
 				Intent intent = new Intent(this, UsuarioPagamentoPedidoActivity.class);
 				intent.putExtra("enderecoSelecionado", enderecoList.get(0));
+				intent.putExtra("pagamentoSelecionado", formaPagamento);
 				startActivity(intent);
-			}else{
+			} else {
 				finalizarPedido();
 			}
 		});
@@ -153,9 +159,10 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 			binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(0)));
 			binding.textValor.setText(getString(R.string.valor, GetMask.getValor(0)));
 		}
+
 	}
 
-	private void recuperaEnderecos() {
+	private void recuperaEndereco() {
 		DatabaseReference enderecoRef = FirebaseHelper.getDatabaseReference()
 				.child("enderecos")
 				.child(FirebaseHelper.getIdFirebase());
@@ -166,8 +173,10 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 					Endereco endereco = ds.getValue(Endereco.class);
 					enderecoList.add(endereco);
 				}
+
 				binding.progressBar.setVisibility(View.GONE);
 				Collections.reverse(enderecoList);
+
 				configDados();
 			}
 
@@ -188,4 +197,5 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 				}
 			}
 	);
+
 }

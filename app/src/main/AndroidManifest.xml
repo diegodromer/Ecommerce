@@ -21,7 +21,7 @@
         android:theme="@style/Theme.Ecommerce"
         tools:targetApi="31">
         <activity
-            android:name=".UsuarioPagamentoPedidoActivity"
+            android:name=".activity.usuario.UsuarioPagamentoPedidoActivity"
             android:exported="false" />
         <activity
             android:name=".activity.app.DetalhesPedidoActivity"
