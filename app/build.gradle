@@ -51,7 +51,7 @@ dependencies {
 
     implementation 'com.github.tsuryo:Swipeable-RecyclerView:1.1'
 
-    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
 
     implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 

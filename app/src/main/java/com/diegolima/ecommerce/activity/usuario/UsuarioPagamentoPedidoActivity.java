@@ -1,42 +1,65 @@
 package com.diegolima.ecommerce.activity.usuario;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.diegolima.ecommerce.DAO.ItemDAO;
 import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.R;
+import com.diegolima.ecommerce.api.MercadoPagoService;
 import com.diegolima.ecommerce.databinding.ActivityUsuarioPagamentoPedidoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Endereco;
+import com.diegolima.ecommerce.model.FormaPagamento;
 import com.diegolima.ecommerce.model.ItemPedido;
 import com.diegolima.ecommerce.model.Loja;
+import com.diegolima.ecommerce.model.Pedido;
 import com.diegolima.ecommerce.model.Produto;
+import com.diegolima.ecommerce.model.StatusPedido;
 import com.diegolima.ecommerce.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mercadopago.android.px.configuration.AdvancedConfiguration;
+import com.mercadopago.android.px.core.MercadoPagoCheckout;
+import com.mercadopago.android.px.model.Payment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
 	private ActivityUsuarioPagamentoPedidoBinding binding;
+
+	private final int REQUEST_MERCADO_PAGO = 100;
 
 	private Endereco enderecoSelecionado;
 	private Usuario usuario;
 	private Loja loja;
 
 	private ItemPedidoDAO itemPedidoDAO;
+	private FormaPagamento formaPagamento;
 	private ItemDAO itemDAO;
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
+
+	private Retrofit retrofit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +69,14 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
 		recuperaDados();
 
-		binding.progressBar.setOnClickListener(v -> configJSON());
+		iniciaRetrofit();
+	}
+
+	private void iniciaRetrofit(){
+		retrofit = new Retrofit.Builder()
+				.baseUrl("https://api.mercadopago.com/")
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
 	}
 
 	private void recuperaDados(){
@@ -55,8 +85,6 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		itemPedidoList = itemPedidoDAO.getList();
 
 		recuperaUsuario();
-
-		recuperaLoja();
 
 		getExtra();
 	}
@@ -115,16 +143,45 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		dados.add("payment_methods", payment_methods);
 
 		Log.i("INFOTESTE", "configJSON: " + dados);
+
+		efetuarPagamento(dados);
 	}
 
 	private void efetuarPagamento(JsonObject dados){
+		String url = "checkout/preferences?access_token=" + loja.getAccessToken();
 
+		MercadoPagoService mercadoPagoService = retrofit.create(MercadoPagoService.class);
+		Call<JsonObject> call = mercadoPagoService.efetuarPagamento(url, dados);
+
+		call.enqueue(new Callback<JsonObject>() {
+			@Override
+			public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+					String id = response.body().get("id").getAsString();
+					continuaPagamento(id);
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+
+			}
+		});
+	}
+
+	private void continuaPagamento(String idPagamento){
+		final AdvancedConfiguration advancedConfiguration =
+				new AdvancedConfiguration.Builder().setBankDealsEnabled(false).build();
+
+		new MercadoPagoCheckout
+				.Builder(loja.getPublicKey(), idPagamento)
+				.setAdvancedConfiguration(advancedConfiguration).build()
+				.startPayment(this, REQUEST_MERCADO_PAGO);
 	}
 
 	private void getExtra(){
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null){
 			enderecoSelecionado = (Endereco) bundle.getSerializable("enderecoSelecionado");
+			formaPagamento = (FormaPagamento) bundle.getSerializable("pagamentoSelecionado");
 		}
 	}
 
@@ -135,6 +192,9 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
 				loja = snapshot.getValue(Loja.class);
+				if (loja != null){
+					configJSON();
+				}
 			}
 
 			@Override
@@ -152,6 +212,9 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
 				usuario = snapshot.getValue(Usuario.class);
+				if (usuario != null){
+					recuperaLoja();
+				}
 			}
 
 			@Override
@@ -161,4 +224,61 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		});
 	}
 
+	private void validaRetorno(Payment payment){
+		String status = payment.getPaymentStatus();
+
+		switch (status){
+			case "approved":
+				finalizarPedido(StatusPedido.APROVADO);
+				break;
+			case "rejected":
+				finalizarPedido(StatusPedido.CANCELADO);
+				break;
+			case "in_progress":
+				finalizarPedido(StatusPedido.PENDENTE);
+				break;
+		}
+	}
+
+	private void finalizarPedido(StatusPedido statusPedido) {
+		Pedido pedido = new Pedido();
+		pedido.setIdCliente(FirebaseHelper.getIdFirebase());
+		pedido.setEndereco(enderecoSelecionado);
+		pedido.setTotal(itemPedidoDAO.getTotalPedido());
+		pedido.setPagamento(formaPagamento.getNome());
+		pedido.setStatusPedido(statusPedido);
+
+		if (formaPagamento.getTipoValor().equals("DESC")) {
+			pedido.setDesconto(formaPagamento.getValor());
+		} else {
+			pedido.setAcrescimo(formaPagamento.getValor());
+		}
+
+		pedido.setItemPedidoList(itemPedidoDAO.getList());
+
+		pedido.salvar(true);
+
+		itemPedidoDAO.limparCarrinho();
+
+		Intent intent = new Intent(this, MainActivityUsuario.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		intent.putExtra("id", 1);
+		startActivity(intent);
+
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if(resultCode == REQUEST_MERCADO_PAGO){
+			if (resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE){
+				Payment payment = (Payment) data.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT);
+				validaRetorno(payment);
+			}
+		}else{
+			Toast.makeText(this, "Erro ao efetuar pagamento", Toast.LENGTH_SHORT).show();
+		}
+	}
 }

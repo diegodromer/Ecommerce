@@ -1,5 +1,6 @@
 package com.diegolima.ecommerce.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.model.Categoria;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,12 +21,13 @@ public class CategoriaDialogAdapter extends RecyclerView.Adapter<CategoriaDialog
 
 	private final List<String> idsCategoriasSelecionadas;
 	private final List<Categoria> categoriaList;
+	private final Context context;
+	private final OnClick onClick;
 
-	private OnClick onClick;
-
-	public CategoriaDialogAdapter(List<String> idsCategoriasSelecionadas, List<Categoria> categoriaList, OnClick onClick) {
+	public CategoriaDialogAdapter(List<String> idsCategoriasSelecionadas, List<Categoria> categoriaList, Context context, OnClick onClick) {
 		this.idsCategoriasSelecionadas = idsCategoriasSelecionadas;
 		this.categoriaList = categoriaList;
+		this.context = context;
 		this.onClick = onClick;
 	}
 
@@ -40,7 +42,12 @@ public class CategoriaDialogAdapter extends RecyclerView.Adapter<CategoriaDialog
 	public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 		Categoria categoria = categoriaList.get(position);
 
-		Picasso.get().load(categoria.getUrlImagem()).into(holder.imagemCategoria);
+		Glide
+				.with(context)
+				.load(categoria.getUrlImagem())
+				.centerCrop()
+				.into(holder.imagemCategoria);
+
 		holder.nomeCategoria.setText(categoria.getNome());
 		if (idsCategoriasSelecionadas.contains(categoria.getId())){
 			holder.checkBox.setChecked(true);

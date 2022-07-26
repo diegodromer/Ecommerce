@@ -3,7 +3,6 @@ package com.diegolima.ecommerce.fragment.loja;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.activity.loja.LojaFormProdutoActivity;
 import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
@@ -26,8 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,8 +116,12 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 
 		for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
 			if (produto.getUrlsImagens().get(i).getIndex() == 0) {
-				Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()
-				).into(dialogBinding.imagemProduto);
+
+				Glide
+						.with(requireContext())
+						.load(produto.getUrlsImagens().get(i).getCaminhoImagem())
+						.centerCrop()
+						.into(dialogBinding.imagemProduto);
 			}
 		}
 

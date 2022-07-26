@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.DAO.ItemDAO;
 import com.diegolima.ecommerce.DAO.ItemPedidoDAO;
 import com.diegolima.ecommerce.R;
@@ -37,7 +38,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -207,8 +207,11 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 			}
 		});
 
-		Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()
-		).into(dialogBinding.imagemProduto);
+		Glide
+				.with(requireContext())
+				.load(produto.getUrlsImagens().get(0).getCaminhoImagem())
+				.centerCrop()
+				.into(dialogBinding.imagemProduto);
 
 		dialogBinding.txtNomeProduto.setText(produto.getTitulo());
 

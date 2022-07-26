@@ -11,13 +11,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Produto;
 import com.diegolima.ecommerce.util.GetMask;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -94,7 +94,11 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 
 		for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
 			if (produto.getUrlsImagens().get(i).getIndex() == 0) {
-				Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()).into(holder.imagemProduto);
+				Glide
+						.with(context)
+						.load(produto.getUrlsImagens().get(i).getCaminhoImagem())
+						.centerCrop()
+						.into(holder.imagemProduto);
 			}
 		}
 

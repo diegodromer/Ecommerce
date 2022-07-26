@@ -1,10 +1,5 @@
 package com.diegolima.ecommerce.activity.loja;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,15 +9,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.databinding.ActivityLojaConfigBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
-import com.diegolima.ecommerce.model.ImagemUpload;
 import com.diegolima.ecommerce.model.Loja;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,9 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,16 +53,16 @@ public class LojaConfigActivity extends AppCompatActivity {
 		configClicks();
 	}
 
-	private void configClicks(){
+	private void configClicks() {
 		binding.include.textTitulo.setText("Configurações");
 		binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 		binding.imgLogo.setOnClickListener(v -> {
 			verificaPermissaoGaleria();
 		});
 		binding.btnSalvar.setOnClickListener(v -> {
-			if (loja != null){
+			if (loja != null) {
 				validaDados();
-			}else{
+			} else {
 				Toast.makeText(this, "Ainda estamos recuperando as informações da loja, aguarde...", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -86,7 +83,7 @@ public class LojaConfigActivity extends AppCompatActivity {
 		})).addOnFailureListener(e -> Toast.makeText(this, "Ocorreu um erro com o upload, tente novamente", Toast.LENGTH_SHORT).show());
 	}
 
-	private void recuperaLoja(){
+	private void recuperaLoja() {
 		DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
 				.child("loja");
 		lojaRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,38 +102,42 @@ public class LojaConfigActivity extends AppCompatActivity {
 	}
 
 	private void configDados() {
-		if (loja.getUrlLogo() != null){
-			Picasso.get().load(loja.getUrlLogo()).into(binding.imgLogo);
+		if (loja.getUrlLogo() != null) {
+			Glide
+					.with(this)
+					.load(loja.getUrlLogo())
+					.centerCrop()
+					.into(binding.imgLogo);
 		}
 
-		if (loja.getNome() != null){
+		if (loja.getNome() != null) {
 			binding.edtLoja.setText(loja.getNome());
 		}
 
-		if (loja.getCNPJ() != null){
+		if (loja.getCNPJ() != null) {
 			binding.edtCNPJ.setText(loja.getCNPJ());
 		}
 
-		if (loja.getPedidoMinimo() != 0){
+		if (loja.getPedidoMinimo() != 0) {
 			binding.edtPedidoMinimo.setText(String.valueOf(loja.getPedidoMinimo() * 10));
 		}
 
-		if (loja.getFreteGratis() != 0){
+		if (loja.getFreteGratis() != 0) {
 			binding.edtFrete.setText(String.valueOf(loja.getFreteGratis() * 10));
 		}
 
-		if (loja.getPublicKey() != null){
+		if (loja.getPublicKey() != null) {
 			binding.edtPublicKey.setText(loja.getPublicKey());
 		}
-		if (loja.getAccessToken() != null){
+		if (loja.getAccessToken() != null) {
 			binding.edtAcessToken.setText(loja.getAccessToken());
 		}
-		if (loja.getParcelas() != 0){
+		if (loja.getParcelas() != 0) {
 			binding.edtParcelas.setText(String.valueOf(loja.getParcelas()));
 		}
 	}
 
-	private void validaDados(){
+	private void validaDados() {
 		String nomeLoja = binding.edtLoja.getText().toString().trim();
 		String cnpj = binding.edtCNPJ.getMasked();
 		double pedidoMinimo = (double) binding.edtPedidoMinimo.getRawValue() / 100;
@@ -150,12 +151,12 @@ public class LojaConfigActivity extends AppCompatActivity {
 			parcelas = Integer.parseInt(binding.edtParcelas.getText().toString().trim());
 		}
 
-		if (!nomeLoja.isEmpty()){
-			if (!cnpj.isEmpty()){
-				if (cnpj.length() == 18){
-					if (!publicKey.isEmpty()){
-						if (!acessToken.isEmpty()){
-							if (parcelas > 0 && parcelas <= 12){
+		if (!nomeLoja.isEmpty()) {
+			if (!cnpj.isEmpty()) {
+				if (cnpj.length() == 18) {
+					if (!publicKey.isEmpty()) {
+						if (!acessToken.isEmpty()) {
+							if (parcelas > 0 && parcelas <= 12) {
 								ocultaTeclado();
 
 								loja.setNome(nomeLoja);
@@ -166,36 +167,36 @@ public class LojaConfigActivity extends AppCompatActivity {
 								loja.setAccessToken(acessToken);
 								loja.setParcelas(parcelas);
 
-								if (caminhoImagem != null){
+								if (caminhoImagem != null) {
 									salvarImagemFirebase();
-								}else if (loja.getUrlLogo() != null){
+								} else if (loja.getUrlLogo() != null) {
 									loja.salvar();
-								}else{
+								} else {
 									ocultaTeclado();
 									Toast.makeText(this, "Escolha uma logo para sua loja", Toast.LENGTH_SHORT).show();
 								}
 
-							}else{
+							} else {
 								binding.edtPublicKey.setError("Mínimo 1 e máximo 12.");
 								binding.edtPublicKey.requestFocus();
 							}
-						}else{
+						} else {
 							binding.edtAcessToken.setError("Informe seu acess token.");
 							binding.edtAcessToken.requestFocus();
 						}
-					}else{
+					} else {
 						binding.edtPublicKey.setError("Informe sua public key.");
 						binding.edtPublicKey.requestFocus();
 					}
-				}else{
+				} else {
 					binding.edtLoja.setError("CNPJ inválido");
 					binding.edtLoja.requestFocus();
 				}
-			}else{
+			} else {
 				binding.edtLoja.setError("Informe o CNPJ da loja");
 				binding.edtLoja.requestFocus();
 			}
-		}else{
+		} else {
 			binding.edtLoja.setError("Informe um nome para sua loja");
 			binding.edtLoja.requestFocus();
 		}
@@ -209,7 +210,7 @@ public class LojaConfigActivity extends AppCompatActivity {
 				InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 
-	private void iniciaComponentes(){
+	private void iniciaComponentes() {
 		binding.edtPedidoMinimo.setLocale(new Locale("PT", "br"));
 		binding.edtFrete.setLocale(new Locale("PT", "br"));
 	}

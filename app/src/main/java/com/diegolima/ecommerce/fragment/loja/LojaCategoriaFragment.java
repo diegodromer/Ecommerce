@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.diegolima.ecommerce.R;
 import com.diegolima.ecommerce.adapter.CategoriaAdapter;
 import com.diegolima.ecommerce.databinding.DialogDeleteBinding;
@@ -41,7 +42,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
-import com.squareup.picasso.Picasso;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
 	private void configRv() {
 		binding.rvCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
 		binding.rvCategorias.setHasFixedSize(true);
-		categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_vertical, false,  categoriaList, this);
+		categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_vertical, false,  categoriaList, this, requireContext());
 		binding.rvCategorias.setAdapter(categoriaAdapter);
 
 		binding.rvCategorias.setListener(new SwipeLeftRightCallback.Listener() {
@@ -182,7 +182,13 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
 
 		if (categoria != null){
 			categoriaBinding.edtCategoria.setText(categoria.getNome());
-			Picasso.get().load(categoria.getUrlImagem()).into(categoriaBinding.imagemCategoria);
+
+			Glide
+					.with(requireContext())
+					.load(categoria.getUrlImagem())
+					.centerCrop()
+					.into(categoriaBinding.imagemCategoria);
+
 			categoriaBinding.cbTodos.setChecked(categoria.isTodas());
 		}
 

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mercadopago.android.px:services:4.20.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d623c5cbba6a46626f0cf67fb2aa92f0/transformed/jetified-services-4.20.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d623c5cbba6a46626f0cf67fb2aa92f0/transformed/jetified-services-4.20.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d623c5cbba6a46626f0cf67fb2aa92f0/transformed/jetified-services-4.20.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mercadopago.android.px/services/4.20.0/ff4e746190abf8c70ed5ecc054f47238d597ff82/services-4.20.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mercadopago.android.px/services/4.20.0/428df6cdc805822ae37381dbaf0d0449bb0bf231/services-4.20.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

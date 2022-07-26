@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import com.diegolima.ecommerce.DAO.ItemDAO;
@@ -19,7 +18,6 @@ import com.diegolima.ecommerce.adapter.LojaProdutoAdapter;
 import com.diegolima.ecommerce.adapter.SliderAdapter;
 import com.diegolima.ecommerce.databinding.ActivityDetalhesProdutosBinding;
 import com.diegolima.ecommerce.databinding.DialogAddItemCarrinhoBinding;
-import com.diegolima.ecommerce.databinding.DialogRemoverCarrinhoBinding;
 import com.diegolima.ecommerce.helper.FirebaseHelper;
 import com.diegolima.ecommerce.model.Favorito;
 import com.diegolima.ecommerce.model.ItemPedido;
@@ -33,7 +31,6 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -210,7 +207,7 @@ public class DetalhesProdutosActivity extends AppCompatActivity implements LojaP
 	}
 
 	private void configDados() {
-		binding.sliderView.setSliderAdapter(new SliderAdapter(produtoSelecionado.getUrlsImagens()));
+		binding.sliderView.setSliderAdapter(new SliderAdapter(produtoSelecionado.getUrlsImagens(), this));
 		binding.sliderView.startAutoCycle();
 		binding.sliderView.setScrollTimeInSec(4);
 		binding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
