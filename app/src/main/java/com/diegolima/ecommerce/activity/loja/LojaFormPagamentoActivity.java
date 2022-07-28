@@ -51,6 +51,8 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
 
 		if (formaPagamento.getTipoValor().equals("DESC")) binding.rgValor.check(R.id.rbDesconto);
 		if (formaPagamento.getTipoValor().equals("ACRES")) binding.rgValor.check(R.id.rbAcrescimo);
+
+		binding.cbCredito.setChecked(formaPagamento.isCredito());
 	}
 
 	private void iniciaComponentes() {
@@ -96,8 +98,7 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
 					intent.putExtra("novoPagamento", formaPagamento);
 					setResult(RESULT_OK, intent);
 					finish();
-				}
-				else {
+				} else {
 					binding.progressBar.setVisibility(View.GONE);
 					Toast.makeText(this, "Forma de pagamento salva com sucesso.", Toast.LENGTH_SHORT).show();
 				}

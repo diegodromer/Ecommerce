@@ -72,14 +72,14 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		iniciaRetrofit();
 	}
 
-	private void iniciaRetrofit(){
+	private void iniciaRetrofit() {
 		retrofit = new Retrofit.Builder()
 				.baseUrl("https://api.mercadopago.com/")
 				.addConverterFactory(GsonConverterFactory.create())
 				.build();
 	}
 
-	private void recuperaDados(){
+	private void recuperaDados() {
 		itemPedidoDAO = new ItemPedidoDAO(this);
 		itemDAO = new ItemDAO(this);
 		itemPedidoList = itemPedidoDAO.getList();
@@ -89,16 +89,25 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		getExtra();
 	}
 
-	private void configJSON(){
+	private void configJSON() {
 		JsonObject dados = new JsonObject();
 
 		JsonArray itemList = new JsonArray();
 
 		JsonObject payer = new JsonObject();
 		JsonObject phone = new JsonObject();
-
 		JsonObject address = new JsonObject();
 		JsonObject payment_methods = new JsonObject();
+
+		JsonObject removerBoleto = new JsonObject();
+		removerBoleto.addProperty("id", "bolbradesco");
+
+		JsonObject removerLoterica = new JsonObject();
+		removerLoterica.addProperty("id", "pec");
+
+		JsonArray excluded_payment_methods = new JsonArray();
+		excluded_payment_methods.add(removerBoleto);
+		excluded_payment_methods.add(removerLoterica);
 
 		String telefone = usuario.getTelefone()
 				.replace("(", "")
@@ -109,15 +118,16 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		phone.addProperty("number", telefone.substring(2, 12));
 
 		address.addProperty("street_name", enderecoSelecionado.getLogradouro());
-		if (enderecoSelecionado.getNumero() != null){
+		if (enderecoSelecionado.getNumero() != null) {
 			address.addProperty("street_number", enderecoSelecionado.getNumero());
 		}
 		address.addProperty("zip_code", enderecoSelecionado.getCep());
 
 		payment_methods.addProperty("installments", loja.getParcelas());
+		payment_methods.add("excluded_payment_methods", excluded_payment_methods);
 
 		JsonObject item;
-		for (ItemPedido itemPedido : itemPedidoList){
+		for (ItemPedido itemPedido : itemPedidoList) {
 			Produto produto = itemPedidoDAO.getProduto(itemPedido.getId());
 			item = new JsonObject();
 
@@ -147,7 +157,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		efetuarPagamento(dados);
 	}
 
-	private void efetuarPagamento(JsonObject dados){
+	private void efetuarPagamento(JsonObject dados) {
 		String url = "checkout/preferences?access_token=" + loja.getAccessToken();
 
 		MercadoPagoService mercadoPagoService = retrofit.create(MercadoPagoService.class);
@@ -156,8 +166,8 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		call.enqueue(new Callback<JsonObject>() {
 			@Override
 			public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-					String id = response.body().get("id").getAsString();
-					continuaPagamento(id);
+				String id = response.body().get("id").getAsString();
+				continuaPagamento(id);
 			}
 
 			@Override
@@ -167,7 +177,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		});
 	}
 
-	private void continuaPagamento(String idPagamento){
+	private void continuaPagamento(String idPagamento) {
 		final AdvancedConfiguration advancedConfiguration =
 				new AdvancedConfiguration.Builder().setBankDealsEnabled(false).build();
 
@@ -177,22 +187,22 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 				.startPayment(this, REQUEST_MERCADO_PAGO);
 	}
 
-	private void getExtra(){
+	private void getExtra() {
 		Bundle bundle = getIntent().getExtras();
-		if (bundle != null){
+		if (bundle != null) {
 			enderecoSelecionado = (Endereco) bundle.getSerializable("enderecoSelecionado");
 			formaPagamento = (FormaPagamento) bundle.getSerializable("pagamentoSelecionado");
 		}
 	}
 
-	private void recuperaLoja(){
+	private void recuperaLoja() {
 		DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
 				.child("loja");
 		lojaRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
 				loja = snapshot.getValue(Loja.class);
-				if (loja != null){
+				if (loja != null) {
 					configJSON();
 				}
 			}
@@ -212,7 +222,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot snapshot) {
 				usuario = snapshot.getValue(Usuario.class);
-				if (usuario != null){
+				if (usuario != null) {
 					recuperaLoja();
 				}
 			}
@@ -224,15 +234,45 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 		});
 	}
 
-	private void validaRetorno(Payment payment){
+	private void validaRetorno(Payment payment) {
 		String status = payment.getPaymentStatus();
+		String statusDetail = payment.getPaymentStatusDetail();
 
-		switch (status){
+		switch (status) {
 			case "approved":
 				finalizarPedido(StatusPedido.APROVADO);
 				break;
 			case "rejected":
 				finalizarPedido(StatusPedido.CANCELADO);
+				switch (statusDetail) {
+					case "cc_rejected_bad_filled_card_number":
+						Toast.makeText(this, "Número do cartão inválido!", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_bad_filled_date":
+						Toast.makeText(this, "Data de vencimento invalida!", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_bad_filled_other":
+						Toast.makeText(this, "Algum dado do cartão inserido é invalido!", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_bad_filled_security_code":
+						Toast.makeText(this, "Código de segurança do cartão é invalido!", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_call_for_authorize":
+						Toast.makeText(this, "Você deve autorizar a operadora do seu cartão a liberar o pagamento do valor ao Mercado Pago.", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_card_disabled":
+						Toast.makeText(this, "Ligue para a operadora do seu cartão para ativar seu cartão. O telefone está no verso do seu cartão.", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_max_attempts":
+						Toast.makeText(this, "Você atingiu o limite de tentativas permitido.", Toast.LENGTH_LONG).show();
+						break;
+					case "cc_rejected_insufficient_amount":
+						Toast.makeText(this, "Pagamento negado por falta de saldo.", Toast.LENGTH_LONG).show();
+						break;
+					default:
+						Toast.makeText(this, "Não pudemos processar seu pagamento, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
+						break;
+				}
 				break;
 			case "in_progress":
 				finalizarPedido(StatusPedido.PENDENTE);
@@ -272,13 +312,13 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if(resultCode == REQUEST_MERCADO_PAGO){
-			if (resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE){
+		if (resultCode == REQUEST_MERCADO_PAGO) {
+			if (resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE) {
 				Payment payment = (Payment) data.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT);
 				validaRetorno(payment);
 			}
-		}else{
-			Toast.makeText(this, "Erro ao efetuar pagamento", Toast.LENGTH_SHORT).show();
+		} else {
+			finish();
 		}
 	}
 }

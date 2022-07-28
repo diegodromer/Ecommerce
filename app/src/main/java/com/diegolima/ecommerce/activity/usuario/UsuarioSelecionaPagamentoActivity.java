@@ -47,9 +47,11 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
 	private void configClicks(){
 		binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 		binding.btnContinuar.setOnClickListener(v -> {
-			Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
-			intent.putExtra("pagamentoSelecionado", formaPagamento);
-			startActivity(intent);
+			if (formaPagamento != null){
+				Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
+				intent.putExtra("pagamentoSelecionado", formaPagamento);
+				startActivity(intent);
+			}
 		});
 	}
 
